@@ -76,15 +76,15 @@ export default function Analyses() {
           qsts.map((qst, idx) => {
             return (
             <div key={qst.id} className={`flex-shrink-0 flex-grow-0 flex-none ${idx === curQst ? 'block' : 'hidden' }`}>
-              <Analysis questionData={{...qst,total:qsts.length}} curQstNum={idx} nextQst={nextQst}/>
+              <Analysis questionData={{...qst,total:qsts.length}} curQstNum={idx+1} nextQst={nextQst} prevQst={prevQst}/>
             </div>)
             } )
         }
       </div>
       <div>
-        <Button variant={'outline'} className="bg-blue-600 hover:bg-blue-700 ">
+        <Button variant={'outline'} className="bg-blue-50 hover:bg-blue-50 text-blue-600 hover:text-blue-700 text-md font-medium py-3 px-4">
           <RotateCcw className="h-6 w-6"></RotateCcw>
-          Practice Again
+          <span className="pl-2">Practice Again</span>
         </Button>
       </div>
     </main>

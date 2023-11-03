@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Separator } from '@/components/ui/separator'
 import { ModeToggle } from '@/components/ui/toggle-theme'
-import { ArrowRight, Check, KeyboardIcon, Mic, Text } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, KeyboardIcon, Mic, Text } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react';
 
@@ -21,11 +21,13 @@ type CardDataFormat = {
 export default function Analysis({ 
   questionData,
   curQstNum,
-  nextQst
+  nextQst,
+  prevQst
 } : {
   questionData:CardDataFormat,
   curQstNum:number,
   nextQst: ()=>void
+  prevQst: ()=>void
 }) {
 
   
@@ -41,11 +43,17 @@ export default function Analysis({
     >
       <Card className='rounded-2xl shadow-xl p-1 pt-3 w-[800px] flex-none shrink-0'>
       <CardHeader>
-          <div className='w-full flex justify-end items-end'>
+          <div className='w-full flex justify-center items-center gap-8'>
+            <Button size={'icon'} variant={`${curQstNum > 1 ? 'outline' : 'ghost'}`}  className={`${curQstNum > 1 ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'}`} disabled={curQstNum == 1} onClick={prevQst}>
+              <ArrowLeft className='h-6 w-6 text-blue-600'/>
+            </Button>
             <div className='flex gap-1'>
               <div className='w-max text-gray-700'>{curQstNum}</div>
               <div className='w-max text-blue-600 font-medium'>{`/ ${questionData.total}`}</div>
             </div>
+            <Button size={'icon'} variant={`${curQstNum > 1 ? 'outline' : 'ghost'}`}  className={`${curQstNum < questionData.total ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'}`} disabled={curQstNum == questionData.total} onClick={nextQst}>
+              <ArrowRight className='h-6 w-6 text-blue-600'/>
+            </Button>
           </div>
           <CardTitle className='text-gray-600 leading-8 pr-4'>{questionData.question ? questionData.question : 'Can you please tell me a bit about yourself?'}</CardTitle>
       </CardHeader>

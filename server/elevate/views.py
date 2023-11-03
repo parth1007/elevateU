@@ -11,9 +11,19 @@ from django.http import JsonResponse
 
 
 def generate_prompt(keywords, difficulty, prompt_type=None):
-    prompt = f"Generate 5 interview questions based on any random topics from the following set of topics - {keywords}. The level of questions should be {difficulty}. Shuffle the questions. Don't include extra words above or after the questions."
-    return prompt
 
+    if difficulty == "Beginner":
+        prompt = f"Generate 5 interview questions based on any random topics from the following set of topics - {keywords}. The level of questions should be {difficulty}. Shuffle the questions. Don't include extra words above or after the questions."
+        return prompt
+    else:
+        prompt = f"Generate 10 interview questions based on any random topics from the following set of topics - {keywords}. The level of questions should be {difficulty}. Shuffle the questions. Don't include extra words above or after the questions."
+        return prompt
+
+
+def generate_analysis_prompt(question, answer):
+    
+    prompt = f"Interviewer\'s question - {question} My answer - {answer} Give a short and crisp analysis of my answer to the interviewer\'s question in not more than 500 words. Also rate my answer on a scale of 10 and give the rating in the end as \"Rating - \". Don't include extra words above or after the analysis."
+    return prompt
 
 def send_request(keywords,difficulty):
 

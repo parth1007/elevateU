@@ -1,34 +1,60 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from elevate.exceptions import InvalidInterviewLength
+# from elevate.exceptions import InvalidInterviewLength
+import json
+from .config import OPENAI_API_KEY
 
 
-def get_question_count(interview_length, difficulty):
-    if(interview_length == "small"):
-        return 5
-    elif(interview_length == "long"):
-        return 10
+import openai
+from django.http import JsonResponse
+
+
+def generate_prompt(keywords, difficulty):
+    print(keywords)
+    prompt = f"Generate 5 interview questions based on any random topics from the following set of topics - {keywords}. The level of questions should be {difficulty}. Shuffle the questions. Don't include extra words above or after the questions."
+
+    return prompt
+
+
+def send_request(keywords,difficulty):
+
+    prompt = generate_prompt(keywords,difficulty)
+    print(prompt)
+    if prompt:
+        openai.api_key = OPENAI_API_KEY
+        response = openai.Completion.create(
+            # engine="davinci",
+            model="gpt-3.5-turbo-instruct",
+            prompt=prompt,
+            max_tokens=500
+        )
+        generated_text = response.choices[0].text
+        return JsonResponse({'generated_text': generated_text})
     else:
-        raise InvalidInterviewLength("Invalid interview length")
+        return JsonResponse({'error': 'Prompt is empty'})
+
+
+
 
 def start_interview(request):
-    return HttpResponse("HEllo")
 
     try:
         if request.method == 'GET':
-            keywords = request.GET.get('keywords')
-            difficulty = request.GET.get('difficulty')
-            interview_length = request.GET.get('interview_length')
+            data = json.loads(request.body.decode('utf-8'))
+            keywords = data['keywords']
+            difficulty = data['difficulty']
 
-            if(keywords.length == 0):
+            response = send_request(keywords,difficulty)
+
+            if(len(keywords) == 0):
                 return HttpResponse("Invalid Input", status=404)
+
+            
+            return HttpResponse(response)
 
         else:
             return HttpResponse("Bad request type", status=400)
-        
-        if(keywords.length == 0):
-            question_count = get_question_count(interview_length, difficulty)
         
         
 
@@ -36,10 +62,6 @@ def start_interview(request):
 
     except ObjectDoesNotExist:
         return HttpResponse("Object does not exist.", status=404)
-    
-    except InvalidInterviewLength:
-        error_message = f"An error occurred: {str(e)}"
-        return HttpResponse(error_message, status=404)
     
     except Exception as e:
         error_message = f"An error occurred: {str(e)}"

@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from 'react'
 import { X, PlusCircle } from 'lucide-react'
 import tags from './tags.json';
-
+import { useRouter } from 'next/navigation'
 import axios from "axios";
 
 
@@ -53,6 +53,7 @@ const HOST = "http://localhost:8000/"
 export default function Session() {
 
   // const initialArray = []
+  const router = useRouter()
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [difficulty, setDifficulty] = useState("Beginner")
   const [questions, setQuestions] = useState([])
@@ -64,7 +65,6 @@ export default function Session() {
     // @ts-ignore
     const fetch_questions = async (e) => {
       
-      e.preventDefault();
       if(selectedTags.length === 0){
         alert("Invalid Input! Please select proper tags");
       }
@@ -86,13 +86,13 @@ export default function Session() {
           console.log(data);
           localStorage.setItem("questionsData", JSON.stringify(data));
           // navigate("/questions");
+          router.push('/questions', { scroll: false })
+
         } catch (error) {
           alert("Some error occured. Please try again");
           console.log(error);
         }
-  
       }
-  
     }
 
   const handleRemoveItem = (index : number) => {
@@ -255,8 +255,8 @@ export default function Session() {
             </div>
             </div>
             <div className="flex items-center justify-end mt-20">
-              <Button className="bg-blue-600 h-12 px-6 shadow-sm hover:bg-blue-700 hover:shadow-md text-md">
-                <Link href="/end" onClick={fetch_questions}>Start Practicing</Link>
+              <Button className="bg-blue-600 h-12 px-6 shadow-sm hover:bg-blue-700 hover:shadow-md text-md" onClick={fetch_questions}>
+                <div>Start Practicing</div>
               </Button>
             </div>
         </div>

@@ -35,12 +35,12 @@ const data : CardDataFormat[] = [
 export default function Questions() {
   
   const router = useRouter()
-  const [qsts, setqsts] = useState(data);
+  const [qsts, setqsts] = useState([]);
   const [curQst, setqst] = useState(0);
 
   const nextQst = () => {
     if(curQst === (qsts.length-1)){
-      router.push('/', { scroll: false })
+      router.push('/end', { scroll: false })
     }
     setqst((curQst) => curQst+1)
   }
@@ -57,15 +57,26 @@ export default function Questions() {
         const questions = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
 
         // @ts-ignore
-        const filteredDescriptions = questions.filter(question => question.trim() !== '');
+        const filteredQuestions = questions.filter(question => question.trim() !== '');
+        
+        console.log("here")
+        console.log(filteredQuestions)
+        // @ts-ignore
 
-        console.log(filteredDescriptions)
-        // setqsts(parsedList);
+        setqsts(filteredQuestions);
+        console.log(qsts)
       }
     };
 
     getDataFromLocalStorage();
   }, []);
+
+  useEffect(() => {
+    console.log(qsts)
+  }, [qsts]);
+
+
+
 
 
 
@@ -73,10 +84,10 @@ export default function Questions() {
     <main className="flex h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa] ">
       <div className="z-10 h-full w-full flex font-sans justify-center items-center">
         {
-          qsts.map((qst, idx) => {
+          (qsts.length > 0) && qsts.map((qst, idx) => {
             return idx === curQst ? (
-            <div key={qst.id} className={`flex-shrink-0 flex-grow-0 flex-none ${idx === curQst ? 'block' : 'hidden' }`}>
-              <Question questionData={{...qst,idx,total:qsts.length}} curQstNum={idx} nextQst={nextQst}/>
+            <div key={idx} className={`flex-shrink-0 flex-grow-0 flex-none ${idx === curQst ? 'block' : 'hidden' }`}>
+              <Question questionData={{'question': qst, id: idx,idx,total:qsts.length}} curQstNum={idx} nextQst={nextQst}/>
             </div>) : <></>
             } )
         }

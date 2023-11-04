@@ -5,6 +5,8 @@ import Analysis from "./analysisCard";
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 type CardDataFormat = {
   "question" : string,
@@ -52,14 +54,27 @@ const data : CardDataFormat[] = [
   },
 ]
 
+const FilterPipeline = (data : string | null) => {
+  
+  if(!data) return []
+
+  const parsedData = JSON.parse(data)    
+  const parsedList = parsedData.split('\n');
+  // @ts-ignore
+  const finalList = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
+  // @ts-ignore
+  const finalListWoBlank = finalList.filter(itm => itm.trim() !== '');
+  return finalListWoBlank
+}
 
 
 export default function Analyses() {
   
   const router = useRouter()
   const [qsts, setqsts] = useState(data);
-  const [qstsTemp, setqstsTemp] = useState([]);
+  const [qstsTemp, setqstsTemp] = useState<Object[]>([]);
   const [curQst, setqst] = useState(0);
+  const [netScore, setNetScore] = useState(0);
 
   const nextQst = () => {
     setqst((curQst) => curQst+1)
@@ -68,39 +83,20 @@ export default function Analyses() {
     setqst((curQst) => curQst-1)
   }
 
-  const FilterPipeline = (data : string) => {
-    const parsedData = JSON.parse(data)    
-    const parsedList = parsedData.split('\n');
-    // @ts-ignore
-    const finalList = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
-    // @ts-ignore
-    const finalListWoBlank = finalList.filter(itm => itm.trim() !== '');
-    return finalListWoBlank
-  }
-  const ProcessPipeline = (data : string, attr: string) => {
-      const vals : string[] = FilterPipeline(JSON.parse(data));
-      // console.log(questions)
-      let questionsFormatted = [];
-      for (const el of vals) {
-        questionsFormatted.push({
-          attr: el
-        });
-      }
-  }
 
   useEffect(() => {
     const getDataFromLocalStorage = () => {
-      
-      // Question Data
-      const questionsData = localStorage.getItem('questionsData'); 
-      if (questionsData) {
-        ProcessPipeline(questionsData, 'question')
-      }
 
-      // Response Data
-      const responsesData = localStorage.getItem('responsesData'); 
-      if (responsesData) {
-        ProcessPipeline(responsesData, 'response')
+      const questionsData = FilterPipeline(localStorage.getItem('questionsData')); 
+      
+      
+      // setqstsTemp(cummulData);
+      if(questionsData.length > 0){
+        questionsData.forEach(() => {
+          setNetScore((netScore) => netScore + questionsData.score)
+        })
+
+        setNetScore((netScore) => netScore/questionsData.length)
       }
     };
     getDataFromLocalStorage();
@@ -118,7 +114,14 @@ export default function Analyses() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa] ">
       <div className="w-3xl max-w-3xl flex flex-col">
         <p className="text-3xl font-semibold text-gray-600 text-center align-middle">{`🎊 Congrats, you did it! Let's review.`}</p>
-        <p className="text-lg font-normal text-gray-500 align-middle text-center leading-6 pt-8 max-w-2xl">{`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}</p>
+        <div className="flex gap-8 mt-10 justify-center items-center">
+          <div className="h-32 w-32 shrink-0 grow-0 flex-none">
+            <CircularProgressbar value={8} text={`8 / 10`} maxValue={10} className="text-blue-600"/>
+          </div>
+          <p className="text-base text-gray-600 leading-6 h-max">
+            {`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}
+          </p>
+        </div>
       </div>
       <div className="z-10 h-fit pt-8 pb-8 w-full flex font-sans justify-center items-start">
         {

@@ -10,14 +10,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import axios from "axios";
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
-export function UploadJD() {
 
-  const [tags, setTags] = useState([])
+export function UploadJD({
+  setSelectedTags, 
+  selectedTags
+}:{
+  setSelectedTags:Dispatch<SetStateAction<string[]>> , 
+  selectedTags:string[]
+}) {
+
+  // const [tags, setTags] = useState([])
   const [jobDesc, setJobDesc] = useState("")
 
 
@@ -32,8 +39,8 @@ export function UploadJD() {
 
     try {
       const input_prompt = {
-        prompt: `Job description - {jobDesc}
-        Extract the top 10 keywords for interview practice from the given job description. Don't include extra words above or below the list.` ,
+        prompt: `Job description - ${jobDesc}
+        Extract the top 5 necessary keywords for the interview from the given job description. Don't include extra words above or below the list.` ,
         max_tokens: 200
       };
 
@@ -45,7 +52,16 @@ export function UploadJD() {
       };
 
       const {data} = await axios.post(endpoint,input_prompt, config);
-      console.log(data);
+      const data_list = data["choices"][0]["text"].trim().split('\n').map((tx:string) =>{ 
+          const tp = tx.trim().split(' ').slice(1).join(' ')
+          return tp
+      })
+      // setTags(data)
+      console.log("data: ",data_list);
+      
+      //@ts-ignore
+      setSelectedTags((selectedTags) => selectedTags.concat(data_list).filter((value, index, self) => self.indexOf(value) === index));
+      setJobDesc("")
       
     } catch (error) {
         alert("Some error occured. Please try again");
@@ -81,7 +97,7 @@ export function UploadJD() {
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4">
-            <Textarea className="text-sm"  value={jobDesc} onChange={handleInputChange}/>
+            <Textarea className="text-sm min-h-[260px] p-4 resize-none bg-gray-50"  value={jobDesc} onChange={handleInputChange}/>
             <p className="text-sm text-muted-foreground">
                 Job Description will be used to find relevent tags for interview
             </p>

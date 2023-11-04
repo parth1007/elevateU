@@ -53,7 +53,7 @@ const HOST = "http://localhost:8000/"
 export default function Session() {
 
   // const initialArray = []
-  const [selectedTags, setSelectedTags] = useState([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [difficulty, setDifficulty] = useState("Beginner")
   const [questions, setQuestions] = useState([])
 
@@ -225,7 +225,7 @@ export default function Session() {
                 </DialogContent>
               </Dialog>
             </div>
-            <UploadJD />
+            <UploadJD selectedTags={selectedTags} setSelectedTags={setSelectedTags }/>
             </div>
             <div className="flex flex-col text-lg font-medium text-gray-700 gap-4 mt-8">
               <span className="flex-none">What are you Aiming for:</span> 

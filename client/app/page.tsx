@@ -19,7 +19,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log("Deleted")
     deleteFromLocalStorage("questionsData")
   }, []);
 
@@ -58,7 +57,7 @@ export default function Home() {
         </div>
         <div className='actions mt-16 flex gap-6 items-center justify-center'>
           <Button variant={'ghost'} size={'lg'} className='text-gray-600 text-md hover:bg-blue-50 hover:text-gray-700' asChild> 
-            <Link href="/info">How it Works?</Link>
+            <Link href="/">How it Works?</Link>
           </Button>
           <Button variant={'default' } size={'lg'} className='bg-blue-600 text-md hover:bg-blue-700 hover:shadow-sm hover:drop-shadow-md' asChild> 
             <Link href="/session">Start Practicing</Link> 

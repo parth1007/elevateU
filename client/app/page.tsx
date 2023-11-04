@@ -1,8 +1,24 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/ui/toggle-theme'
 import Link from 'next/link'
+import {useState, useEffect} from 'react'
 
 export default function Home() {
+  const subjects = ["Cybersecurity","Software Engineering", "UI/UX designer","Web developer","App Developer","Management"]
+
+  const [subIdx, setSubIdx] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSubIdx((subIdx) => (subIdx+1)%subjects.length)
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+  
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa]">
       <div className="z-10 max-w-3xl w-full flex-col items-center justify-center font-sans mt-28">
@@ -17,7 +33,7 @@ export default function Home() {
             A quick way to prepare for your next interview in 
           </div>
           <span className='text-sky-600 font-semibold px-2 py-1 mx-1 bg-sky-100 rounded-md'>
-            Cybersecurity
+            {subjects[subIdx]}
           </span>
           <div className='justify-center text-center pt-6 max-w-xl leading-6 font-normal'>Pepare for your next interview. Practice key questions, get insights about your answers, and get more comfortable interviewing.
 </div>

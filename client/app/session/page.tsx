@@ -36,6 +36,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  Separator,
+} from "@/components/ui/separator"
 
 
 
@@ -60,31 +63,53 @@ export default function Session() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa]">
       <div className="z-10 max-w-3xl w-full flex-col items-center justify-center font-sans mt-28">
-        <div >
-            <div className="border-[1px] min-h-[3rem]">
-
+        <div className="flex text-3xl font-semibold text-gray-600 mb-6 items-center justify-center">
+          Customize your Interview Session
+        </div>
+        <Separator className="mb-6" />
+        <div className="flex text-lg font-medium text-gray-700 gap-4 items-center justify-center">
+          <span className="flex-none">Enter your Name:</span> 
+          <Input className="focus:outline-2 focus:outline-blue-600 text-base font-normal"></Input>
+        </div>
+        <div>
+            <div className="border-[1px] min-h-[3rem] mt-6 rounded-lg cursor-pointer">
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="text-xl flex p-[1rem] pl-[1.5rem]">Add Tags Profile <PlusCircle className="ml-[0.7rem]"></PlusCircle></div>
+                  <div className="text-base font-medium text-gray-700 flex items-center justify-between p-[1rem] pl-[1.5rem]">
+                    {(selectedTags.length === 0) ? (
+                      'Add Tags Profile'
+                      ) : (
+                        <div className="mt-[0.5rem] min-h-[2rem] flex flex-wrap gap-1">
+                          {selectedTags.map((item, index) => (
+                                  <div key={index} className="flex pl-4 pr-2 py-2 border-[1px] rounded-full font-normal text-sm justify-center items-center">
+                                      {item}
+                                      <X className="cursor-pointer bg-gray-600 text-white text-base p-1 ml-2 rounded-full" onClick={() => handleRemoveItem(index)}> </X>
+                                  </div>
+                          ))}
+                      </div>
+                      )
+                    } 
+                    <PlusCircle className="ml-2 h-6 w-6 text-xl flex-none"></PlusCircle>
+                  </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px] bg-white">
+                <DialogContent className="sm:max-w-[725px] bg-white">
                   <DialogHeader>
                   <div className="flex flex-wrap border-1">
                   </div>
-                    <DialogTitle>Add Tags</DialogTitle>
-                    <DialogDescription>
-                      {"Make changes to your profile here. Click save when you're done."}
+                    <DialogTitle className="text-lg">Add Tags</DialogTitle>
+                    <DialogDescription className="text-sm">
+                      {"Add the tags you want to take mock-interview for... Click save when you're done."}
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
+                  <div className="grid gap-4 pt-2 w-full">
+                    <div className="grid grid-cols-4 items-center gap-4 w-full">
                       <Popover open={open} onOpenChange={setOpen}>
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
                               role="combobox"
                               aria-expanded={open}
-                              className="w-[200px] justify-between"
+                              className="w-[675px] justify-between"
                             >
                               {value
                                 ? tags.find((tag) => tag.value === value)?.label
@@ -92,7 +117,7 @@ export default function Session() {
                               <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-[200px] p-0">
+                          <PopoverContent className="w-[675px] p-0">
                             <Command>
                               <CommandInput placeholder="Search tag..." className="h-9" />
                               <CommandEmpty>No tag found.</CommandEmpty>
@@ -101,7 +126,8 @@ export default function Session() {
                                   <CommandItem
                                     key={tag.value}
                                     value={tag.value}
-                                    onSelect={(currentValue) => {
+                                    // @ts-ignore
+                                    onSelect={(currentValue : number) => {
                                       // setValue(currentValue === value ? "" : currentValue)
                                       // @ts-ignore
                                       setSelectedTags(selectedTags => [...selectedTags, currentValue])
@@ -123,15 +149,13 @@ export default function Session() {
                           </PopoverContent>
                         </Popover>
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-
-                    </div>
                   </div>
-                  <div className="flex flex-wrap border-1">
+                  <Separator />
+                  <div className="flex flex-wrap gap-1">
                       {selectedTags.map((item, index) => (
-                        <div key={index} className="flex p-[0.5rem] m-[0.5rem] border-[1px]">
+                        <div key={index} className="flex pl-4 pr-2 py-2 border-[1px] rounded-full font-normal text-sm justify-center items-center">
                             {item}
-                            <X className="cursor-pointer" onClick={() => handleRemoveItem(index)}> </X>
+                            <X className="cursor-pointer bg-gray-600 text-white text-base p-1 ml-2 rounded-full" onClick={() => handleRemoveItem(index)}> </X>
                         </div>  
                       ))}
                   </div>
@@ -142,28 +166,25 @@ export default function Session() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              
-              <div className="mt-[0.5rem] min-h-[2rem] border-[1px] flex flex-wrap">
-                  {selectedTags.map((item, index) => (
-                          <div key={index} className="flex p-[0.5rem] m-[0.5rem] border-[1px]">
-                              {item}
-                              <X className="cursor-pointer" onClick={() => handleRemoveItem(index)}> </X>
-                          </div>  
-                  ))}
-              </div>
             </div>
-            <div className="flex">
-                <div className={`flex border-[1px] p-[1rem] m-[1rem] ${(difficulty == "Beginner") ? 'ring-2 ring-blue-600' : ''}`}
+            <div className="flex flex-col text-lg font-medium text-gray-700 gap-4 mt-8">
+              <span className="flex-none">What are you Aiming for:</span> 
+              <div className="flex gap-8">
+                <div className={`flex border-1 p-4 px-6 rounded-md cursor-pointer ${(difficulty == "Beginner") ? 'ring-2 ring-blue-600 shadow-lg drop-shadow-sm text-blue-700' : ''}`}
                       onClick={() => setDifficulty("Beginner")}>
-                      Beginner
+                      Entry-Level
                 </div>
-                <div className={`flex border-[1px] p-[1rem] m-[1rem] ${(difficulty == "Professional") ? 'ring-2 ring-blue-600' : ''}`}
+                <div className={`flex border-1 p-4 px-6 rounded-md cursor-pointer ${(difficulty == "Professional") ? 'ring-2 ring-blue-600' : 'shadow-sm'}`}
                       onClick={() => setDifficulty("Professional")}>
-                      Professional
+                      Industry-Professional
                 </div>
             </div>
-
-            <Button>Start Practicing</Button>
+            </div>
+            <div className="flex items-center justify-end mt-20">
+              <Button className="bg-blue-600 h-12 px-6 shadow-sm hover:bg-blue-700 hover:shadow-md text-md">
+                <Link href="/questions">Start Practicing</Link>
+              </Button>
+            </div>
         </div>
       </div>
     </main>

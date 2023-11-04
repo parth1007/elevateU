@@ -66,12 +66,12 @@ export default function Analyses() {
   }
 
   return (
-    <main className="flex h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa] ">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa] ">
       <div className="w-3xl max-w-3xl flex flex-col">
         <p className="text-3xl font-semibold text-gray-600 text-center align-middle">{`🎊 Congrats, you did it! Let's review.`}</p>
         <p className="text-lg font-normal text-gray-500 align-middle text-center leading-6 pt-8 max-w-2xl">{`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}</p>
       </div>
-      <div className="z-10 h-full w-full flex font-sans justify-center items-center">
+      <div className="z-10 h-fit pt-8 pb-8 w-full flex font-sans justify-center items-start">
         {
           qsts.map((qst, idx) => {
             return (

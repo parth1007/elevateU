@@ -83,7 +83,7 @@ export default function Question({
               {
                 (qstState === 0) && (
                   <Button className='h-12 w-16 accent-blue-600 outline-blue-600 outline-1 text-md text-blue-600 hover:text-blue-700 bg-blue-50' variant={'outline'} onClick={nextQst}>
-                    Skip
+                    {questionData.idx !== questionData.total-1 ? "Skip" : "End" }
                   </Button>
                 )
               }
@@ -114,7 +114,7 @@ export default function Question({
                   <Button className='bg-blue-600 h-12 px-6 hover:bg-blue-700 hover:shadow-md' onClick={nextQst}>
                     <ArrowRight className='h-6 w-6'></ArrowRight>
                     <span className='pl-2 text-lg'>
-                        Next
+                    {questionData.idx !== questionData.total-1 ? "Next" : "End" }
                     </span>
                   </Button> 
                 )

@@ -5,15 +5,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Separator } from '@/components/ui/separator'
 import { ModeToggle } from '@/components/ui/toggle-theme'
-import { ArrowRight, Check, KeyboardIcon, Mic, Text } from 'lucide-react'
+import { ArrowRight, Check, KeyboardIcon, Mic, Text, Speaker } from 'lucide-react'
 import Link from 'next/link'
 import { useTts } from 'tts-react'
 import type { TTSHookProps } from 'tts-react'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {audioBlobToBase64, convertToMP3} from '@/util/transcribe';
 import axios from 'axios';
-
-type SpeakProps = Pick<TTSHookProps, 'children'>
+import speak from '@/util/textToSpeech';
 
 type CardDataFormat = {
   "question" : string,
@@ -21,6 +20,7 @@ type CardDataFormat = {
   "idx": number,
   "total": number
 }
+type SpeakProps = Pick<TTSHookProps, 'children'>
 
 const Speak = ({ children }: SpeakProps) => (
   <>{useTts({ children, autoPlay: true }).ttsChildren}</>
@@ -36,7 +36,30 @@ export default function Question({
   nextQst: ()=>void
 }) {
 
+  // Text to Speech
+  const [audioUrl, setAudioUrl] = useState<string>('');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const makeSpeech = async () => {
+    await speak(questionData.question, setAudioUrl);
+    
+  }
+  // Call the function to make the API request
+  useEffect(() => {
+    // makeSpeech()
+    makeSpeech();
+  }, [])
+
+  useEffect(() => {
+    if (audioRef.current) {
+      //@ts-ignore
+      audioRef.current.play();
+    }
+  }, [audioUrl])
+
+
   
+
   const [isOpen, setIsOpen] = useState(false)
   const [qstState, setQstState] = useState(0);
   // 0 -> Answer --> on click start listening, convert to Done
@@ -150,7 +173,7 @@ export default function Question({
           <div className='flex w-full justify-between items-center'>
           <div>
               <Button className='h-12 w-12 accent-blue-600 outline-blue-600 outline-1 bg-blue-50' variant={'outline'} size={'icon'}>
-              <KeyboardIcon className='h-8 w-8 text-blue-600 font-thin'></KeyboardIcon>
+              <Speaker className='h-8 w-8 text-blue-600 font-thin' onClick={makeSpeech}></Speaker>
               </Button>
           </div>
           <div className='flex gap-4 items-center'>

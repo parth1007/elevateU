@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Question from "./questionCard";
 import { useRouter } from 'next/navigation'
 
@@ -44,6 +44,30 @@ export default function Questions() {
     }
     setqst((curQst) => curQst+1)
   }
+
+  useEffect(() => {
+    const getDataFromLocalStorage = () => {
+      const questionsData = localStorage.getItem('questionsData'); 
+      if (questionsData) {
+        const parsedData = JSON.parse(questionsData);
+
+        const parsedList = parsedData.split('\n');
+
+        // @ts-ignore
+        const questions = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
+
+        // @ts-ignore
+        const filteredDescriptions = questions.filter(question => question.trim() !== '');
+
+        console.log(filteredDescriptions)
+        // setqsts(parsedList);
+      }
+    };
+
+    getDataFromLocalStorage();
+  }, []);
+
+
 
   return (
     <main className="flex h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa] ">

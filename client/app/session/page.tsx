@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/ui/toggle-theme'
 import Link from 'next/link'
 import { cn } from "@/lib/utils"
+import {useEffect} from 'react'
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,9 @@ import { Label } from "@/components/ui/label"
 import { useState } from 'react'
 import { X, PlusCircle } from 'lucide-react'
 import tags from './tags.json';
+
+import axios from "axios";
+
 
 // @ts-ignore
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
@@ -43,7 +47,7 @@ import { UploadJD } from "./JobDescDialog";
 import { UploadResume } from "./ResumeDialog";
 
 
-
+const HOST = "http://localhost:8000/"
 
 
 export default function Session() {
@@ -51,9 +55,45 @@ export default function Session() {
   // const initialArray = []
   const [selectedTags, setSelectedTags] = useState([])
   const [difficulty, setDifficulty] = useState("Beginner")
+  const [questions, setQuestions] = useState([])
 
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+
+
+    // @ts-ignore
+    const fetch_questions = async (e) => {
+      
+      e.preventDefault();
+      if(selectedTags.length === 0){
+        alert("Invalid Input! Please select proper tags");
+      }
+      else{
+        try {
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+            },
+          };
+          const input_data ={
+            "keywords" : selectedTags,
+            "difficulty" : difficulty
+          }
+          console.log("Setting")
+          console.log(input_data)
+  
+          const {data} = await axios.post(`${HOST}`,input_data, config);
+          console.log(data);
+          localStorage.setItem("questionsData", JSON.stringify(data));
+          // navigate("/questions");
+        } catch (error) {
+          alert("Some error occured. Please try again");
+          console.log(error);
+        }
+  
+      }
+  
+    }
 
   const handleRemoveItem = (index : number) => {
       const updatedItems = [...selectedTags];
@@ -149,7 +189,7 @@ export default function Session() {
                                       // setValue(currentValue === value ? "" : currentValue)
                                       // @ts-ignore
                                       insertTag(currentValue)
-                                      console.log(selectedTags)
+                                      // console.log(selectedTags)
                                       setOpen(false)
                                     }}
                                   >
@@ -216,7 +256,7 @@ export default function Session() {
             </div>
             <div className="flex items-center justify-end mt-20">
               <Button className="bg-blue-600 h-12 px-6 shadow-sm hover:bg-blue-700 hover:shadow-md text-md">
-                <Link href="/questions">Start Practicing</Link>
+                <Link href="/end" onClick={fetch_questions}>Start Practicing</Link>
               </Button>
             </div>
         </div>

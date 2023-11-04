@@ -11,13 +11,29 @@ export default function Home() {
 
   const [subIdx, setSubIdx] = useState(0)
 
+  
+  const deleteFromLocalStorage = (key : string) => {
+    if (localStorage.getItem(key) !== null){
+      localStorage.removeItem(key); 
+    }
+  };
+
+  useEffect(() => {
+    console.log("Deleted")
+    deleteFromLocalStorage("questionsData")
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setSubIdx((subIdx) => (subIdx+1)%subjects.length)
     }, 2000);
 
     return () => clearInterval(interval);
+
   }, []);
+
+
+  
   
 
   return (

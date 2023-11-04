@@ -4,10 +4,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from elevate.exceptions import PromptError
 import json
 from .config import OPENAI_API_KEY
-
-
 import openai
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 def generate_prompt(keywords, difficulty, prompt_type=None):
@@ -29,15 +28,19 @@ def send_request(keywords,difficulty):
 
     try:
         prompt = generate_prompt(keywords,difficulty)
+        print("---------")
         print(prompt)
+        print("---------\n")
         if prompt:
             openai.api_key = OPENAI_API_KEY
+
             response = openai.Completion.create(
                 model="gpt-3.5-turbo-instruct",
                 prompt=prompt,
                 max_tokens=500
             )
             generated_text = response.choices[0].text
+
             return generated_text
         else:
             raise PromptError("Prompt is empty")
@@ -45,22 +48,21 @@ def send_request(keywords,difficulty):
     except:
         raise PromptError("OpenAI API error")
 
-
-
-
+@csrf_exempt 
 def start_interview(request):
 
     try:
-        if request.method == 'GET':
+        if request.method == 'POST':
             data = json.loads(request.body.decode('utf-8'))
             keywords = data['keywords']
             difficulty = data['difficulty']
 
+            
             response = send_request(keywords,difficulty)
 
             if(len(keywords) == 0):
                 return HttpResponse("Invalid Input", status=404)
-
+            
             return HttpResponse(response)
 
         else:

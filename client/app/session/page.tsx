@@ -40,6 +40,7 @@ import {
   Separator,
 } from "@/components/ui/separator"
 import { UploadJD } from "./JobDescDialog";
+import { UploadResume } from "./ResumeDialog";
 
 
 
@@ -74,12 +75,13 @@ export default function Session() {
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa]">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f4f6fa]">
       <div className="z-10 max-w-3xl w-full flex-col items-center justify-center font-sans mt-28">
         <div className="flex text-3xl font-semibold text-gray-600 mb-6 items-center justify-center">
           Customize your Interview Session
         </div>
         <Separator className="mb-6" />
+        <UploadResume />
         <div className="flex text-lg font-medium text-gray-700 gap-4 items-center justify-center">
           <span className="flex-none">Enter your Name:</span> 
           <Input className="focus:outline-2 focus:outline-blue-600 text-base font-normal"></Input>
@@ -188,13 +190,27 @@ export default function Session() {
             <div className="flex flex-col text-lg font-medium text-gray-700 gap-4 mt-8">
               <span className="flex-none">What are you Aiming for:</span> 
               <div className="flex gap-8">
-                <div className={`flex border-1 p-4 px-6 rounded-md cursor-pointer ${(difficulty == "Beginner") ? 'ring-2 ring-blue-600 shadow-lg drop-shadow-sm text-blue-700' : ''}`}
+                <div className={`flex flex-col h-32 w-72 border-1 p-4 px-6 rounded-md cursor-pointer ${(difficulty == "Beginner") ? 'ring-2 ring-blue-600 shadow-lg drop-shadow-sm text-blue-700' : 'shadow-sm'}`}
                       onClick={() => setDifficulty("Beginner")}>
-                      Entry-Level
+                      <span className="text-xl">
+                        Entry-Level
+                      </span>
+                      <div className="text-sm flex flex-col mt-2 leading-4 gap-[2px]">
+                        <span>Beginner level Difficulty</span>
+                        <span>25-30 minutes</span>
+                        <span>5 Questions</span>
+                      </div>
                 </div>
-                <div className={`flex border-1 p-4 px-6 rounded-md cursor-pointer ${(difficulty == "Professional") ? 'ring-2 ring-blue-600' : 'shadow-sm'}`}
+                <div className={`flex flex-col h-32 w-72 border-1 p-4 px-6 rounded-md cursor-pointer ${(difficulty == "Professional") ? 'ring-2 ring-blue-600 shadow-lg drop-shadow-sm text-blue-700' : 'shadow-sm'}`}
                       onClick={() => setDifficulty("Professional")}>
-                      Industry-Professional
+                      <span className="text-xl">
+                        Industry-Professional
+                      </span>
+                      <div className="text-sm flex flex-col mt-2 leading-4 gap-[2px]">
+                        <span>Moderate level Difficulty</span>
+                        <span>45-50 minutes</span>
+                        <span>10 Questions</span>
+                      </div>
                 </div>
             </div>
             </div>

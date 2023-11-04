@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/ui/toggle-theme'
 import Link from 'next/link'
 import {useState, useEffect} from 'react'
+import MainLogo from './ElevateULogo'
 
 export default function Home() {
   const subjects = ["Cybersecurity","Software Engineering", "UI/UX designer","Web developer","App Developer","Management"]
@@ -22,11 +23,12 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa]">
       <div className="z-10 max-w-3xl w-full flex-col items-center justify-center font-sans mt-28">
-        <div className='flex flex-col max-w-xl m-auto items-center justify-center gap-2 space-x-3'>
-          <div className="text-7xl font-semibold flex-col justify-center items-center w-max text-gray-600 space-x-0"> elevate 
+        <div className='flex flex-col max-w-xl m-auto items-center justify-center gap-2 space-x-3 w-full'>
+          {/* <div className="text-7xl font-semibold flex-col justify-center items-center w-max text-gray-600 space-x-0"> elevate 
             <span className="pl-2 text-6xl font-bold text-blue-600">U</span> 
-          </div>
-          <div className='text-3xl w-max font-light italic antialiased'>AI Mock Interviews</div>
+          </div> */}
+          <MainLogo className="max-w-5xl w-8/12"/>
+          <div className='text-3xl w-max font-light italic antialiased mt-1'>AI Mock Interviews</div>
         </div>
         <div className='mt-12 flex flex-col justify-center items-center text-lg font-medium text-gray-600'>
           <div className=''>

@@ -74,24 +74,26 @@ export default function Session() {
         <div>
             <div className="border-[1px] min-h-[3rem] mt-6 rounded-lg cursor-pointer">
               <Dialog>
-                <DialogTrigger asChild>
-                  <div className="text-base font-medium text-gray-700 flex items-center justify-between p-[1rem] pl-[1.5rem]">
-                    {(selectedTags.length === 0) ? (
-                      'Add Tags Profile'
-                      ) : (
-                        <div className="mt-[0.5rem] min-h-[2rem] flex flex-wrap gap-1">
-                          {selectedTags.map((item, index) => (
-                                  <div key={index} className="flex pl-4 pr-2 py-2 border-[1px] rounded-full font-normal text-sm justify-center items-center">
-                                      {item}
-                                      <X className="cursor-pointer bg-gray-600 text-white text-base p-1 ml-2 rounded-full" onClick={() => handleRemoveItem(index)}> </X>
-                                  </div>
-                          ))}
+                <div className="relative">
+                  <DialogTrigger asChild>
+                    <div className="text-base font-medium text-gray-700 flex items-center justify-between p-[1rem] pl-[1.5rem]">
+                      <span >Add Tags Profile</span>
+                        <PlusCircle className="ml-2 h-6 w-6 text-xl flex-none "></PlusCircle>
+                    </div>
+                  </DialogTrigger>
+                  {
+                    (
+                      <div className={`mt-[0.5rem] ml-3 mb-3 flex flex-wrap gap-1 ${(selectedTags.length === 0) ? 'hidden' : 'block'}`}>
+                        {selectedTags.map((item, index) => (
+                                <div key={index} className="flex pl-4 pr-2 py-2 border-[1px] rounded-full font-normal text-sm justify-center items-center">
+                                    {item}
+                                    <X className="cursor-pointer bg-gray-600 text-white text-base p-1 ml-2 rounded-full" onClick={() => handleRemoveItem(index)}> </X>
+                                </div>
+                        ))}
                       </div>
-                      )
-                    } 
-                    <PlusCircle className="ml-2 h-6 w-6 text-xl flex-none"></PlusCircle>
-                  </div>
-                </DialogTrigger>
+                    )
+                  }
+              </div>
                 <DialogContent className="sm:max-w-[725px] bg-white">
                   <DialogHeader>
                   <div className="flex flex-wrap border-1">

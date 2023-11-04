@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Separator } from '@/components/ui/separator'
 import { ModeToggle } from '@/components/ui/toggle-theme'
-import { ArrowRight, Check, KeyboardIcon, Mic, Text } from 'lucide-react'
+import { ArrowRight, Check, KeyboardIcon, Mic, Text, Speaker } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import axios from "axios";
+import speak from '@/util/textToSpeech';
 
 type CardDataFormat = {
   "question" : string,
@@ -26,7 +28,30 @@ export default function Question({
   nextQst: ()=>void
 }) {
 
+  // Text to Speech
+  const [audioUrl, setAudioUrl] = useState<string>('');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const makeSpeech = async () => {
+    await speak(questionData.question, setAudioUrl);
+    
+  }
+  // Call the function to make the API request
+  useEffect(() => {
+    // makeSpeech()
+    makeSpeech();
+  }, [])
+
+  useEffect(() => {
+    if (audioRef.current) {
+      //@ts-ignore
+      audioRef.current.play();
+    }
+  }, [audioUrl])
+
+
   
+
   const [isOpen, setIsOpen] = useState(false)
   const [qstState, setQstState] = useState(0);
   // 0 -> Answer --> on click start listening, convert to Done
@@ -58,7 +83,13 @@ export default function Question({
               <div className='w-max text-blue-600 font-medium'>{`/ ${questionData.total}`}</div>
             </div>
           </div>
-          <CardTitle className='text-gray-600 leading-8 pr-4'>{questionData.question ? questionData.question : 'Can you please tell me a bit about yourself?'}</CardTitle>
+          <CardTitle className='text-gray-600 leading-8 pr-4'>
+            <Speaker>
+            {/* {audioUrl && <AudioPlayer src={audioUrl} autoPlay controls />} */}
+            { audioUrl && <audio ref={audioRef} src={audioUrl} controls /> }
+            </Speaker>
+              {questionData.question}
+          </CardTitle>
       </CardHeader>
       <Separator/>
       <CollapsibleContent>
@@ -76,7 +107,7 @@ export default function Question({
           <div className='flex w-full justify-between items-center'>
           <div>
               <Button className='h-12 w-12 accent-blue-600 outline-blue-600 outline-1 bg-blue-50' variant={'outline'} size={'icon'}>
-              <KeyboardIcon className='h-8 w-8 text-blue-600 font-thin'></KeyboardIcon>
+              <Speaker className='h-8 w-8 text-blue-600 font-thin' onClick={makeSpeech}></Speaker>
               </Button>
           </div>
           <div className='flex gap-4 items-center'>

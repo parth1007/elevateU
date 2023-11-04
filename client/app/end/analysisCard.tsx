@@ -80,23 +80,22 @@ export default function Analysis({
           <CardTitle className='text-gray-600 leading-8 pr-[1rem]'>{questionData.question ? questionData.question : 'Can you please tell me a bit about yourself?'}</CardTitle>
       </CardHeader>
       <Separator/>
-      <CardFooter className='pt-4 bg-[#fafbfc]'>
+      <CardContent className='pt-4 bg-[#fafbfc]'>
           <div className='flex w-full justify-center items-center'>
             <div className='flex w-full justify-center items-center flex-col'>
-                  <Tabs defaultValue="account" className="w-full">
-                      <TabsList className="grid w-full grid-cols-1">
-                        <TabsTrigger value="" className={`text-base ${scoreInfo[0]}`}>{scoreInfo[2]}   Your Score : {questionData.score} {scoreInfo[1]}</TabsTrigger>
-                      </TabsList>
-                    </Tabs>
+                      <div className="w-full flex justify-center items-center p-4 gap-2">
+                        <span className='text-2xl leading-6'>{scoreInfo[1]}</span>
+                        <p className={`text-xl leading-6 ${scoreInfo[0]} text-center align-middle font-semibold`}>{`${scoreInfo[2]}  You Scored ${questionData.score} in this Question`}</p>
+                      </div>
                     <br/>
 
                   <Tabs defaultValue="account" className="w-full">
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="account" className="text-base">Analysis</TabsTrigger>
-                        <TabsTrigger value="password" className="text-base">Your Response</TabsTrigger>
+                      <TabsList className="grid w-full grid-cols-2 p-2 h-auto">
+                        <TabsTrigger value="account" className="text-base text-gray-800">Analysis</TabsTrigger>
+                        <TabsTrigger value="password" className="text-base text-gray-800">Your Response</TabsTrigger>
                       </TabsList>
                       <TabsContent value="account">
-                        <Card>
+                        <Card className='bg-transparent'>
                           <CardHeader>
                             {/* <CardTitle>Analysis</CardTitle> */}
                             <CardDescription>
@@ -107,9 +106,10 @@ export default function Analysis({
                         </Card>
                       </TabsContent>
                       <TabsContent value="password">
-                        <Card>
+                        <Card className='bg-transparent'>
                           <CardHeader>
                             <CardDescription>
+                              Response...
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit voluptas cupiditate velit minima accusamus mollitia ad praesentium voluptate eveniet. Similique illo repellendus ratione, sint qui, fugit aut quibusdam excepturi sequi sapiente optio, voluptates facere quod sed blanditiis eum temporibus iste placeat facilis libero iure praesentium? Dolores magnam distinctio neque, odio molestiae, tempore nobis maiores quibusdam commodi veritatis illo ratione provident at. Recusandae sapiente ut accusantium quasi non doloremque! Animi, nulla sed consequatur esse quas quibusdam corporis consectetur illo repudiandae beatae, iure magni! Maiores ipsa id earum, perferendis eum suscipit eveniet at molestias cum excepturi, reprehenderit laboriosam velit. Itaque accusamus, corrupti repellat vel sunt maxime. Numquam sed iusto quos, magnam quo accusamus rem, laboriosam ad blanditiis, magni tempora beatae expedita praesentium quasi? Officiis eos, commodi distinctio fugit dolorum neque animi dicta quibusdam soluta quaerat maiores illum nesciunt magnam enim beatae, tempora illo deserunt minus. Reiciendis, maxime eos quisquam voluptatum repudiandae id doloremque delectus atque dolores enim suscipit hic modi saepe, laborum deleniti. Tenetur corporis a iure, quo dolor recusandae voluptates commodi. Corrupti corporis itaque molestias debitis deleniti dolores blanditiis sequi magnam a, ad similique quia, animi maxime quisquam eos ut quae mollitia fugiat excepturi? Tempora quidem inventore, sed id accusantium similique, ipsam incidunt excepturi voluptatem in quia ullam maiores eos officia rem numquam quaerat placeat saepe et quisquam consectetur beatae cumque aliquid. Quaerat dolor sequi maiores facilis vel, reprehenderit, enim atque unde nulla dolore libero aliquid nam laudantium placeat sapiente corporis? Repellendus nulla reiciendis maxime nostrum libero deserunt saepe labore, illo velit ut corrupti dicta modi corporis.
                             </CardDescription>
                           </CardHeader>
@@ -118,7 +118,7 @@ export default function Analysis({
                   </Tabs>
             </div>
           </div>
-      </CardFooter>
+      </CardContent>
       </Card>
   )
 }

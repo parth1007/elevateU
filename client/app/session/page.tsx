@@ -59,6 +59,18 @@ export default function Session() {
       setSelectedTags(updatedItems);
   };
 
+  const insertTag = (currentValue: String) => {
+
+    for(let i = 0; i < selectedTags.length; i++) {
+      if (selectedTags[i] === currentValue) {
+        return;
+      }
+    }
+    //@ts-ignore
+    setSelectedTags(selectedTags => [...selectedTags, currentValue])
+
+  }
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa]">
@@ -132,7 +144,7 @@ export default function Session() {
                                     onSelect={(currentValue : number) => {
                                       // setValue(currentValue === value ? "" : currentValue)
                                       // @ts-ignore
-                                      setSelectedTags(selectedTags => [...selectedTags, currentValue])
+                                      insertTag(currentValue)
                                       console.log(selectedTags)
                                       setOpen(false)
                                     }}

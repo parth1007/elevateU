@@ -98,22 +98,56 @@ export default function Question({
         recData.push(event.data)
       });
 
-      recorder.addEventListener('stop', () => {
+      recorder.addEventListener('stop', async () => {
         //@ts-ignore
         const finData = new Blob(recData, {
           'type': 'audio/mp3'
         });
-
         console.log(finData);
+        
+        // API Call to Eden
+        try{
+          const startTime = performance.now();
+          
+          const apiConfig = {
+            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_KEY_EDEN}`,
+          }
+
+          const response = await axios.post(
+            `https://api.edenai.run/v2/audio/speech_to_text_async`,
+            apiConfig,
+            // data: {
+
+            // }
+            );
+
+          const endTime = performance.now();
+          const elapsedTime = endTime - startTime;
+          console.log('Time taken (ms):', elapsedTime);
+
+          if (response.data.results && response.data.results.length > 0) {
+            setTranscription(response.data.results[0].alternatives[0].transcript);
+          } else {
+            console.log('No transcription results in the API response:', response.data);
+            setTranscription('');
+          }
+
+        } catch(error){
+          //@ts-ignore
+          console.error('Error with Google Speech-to-Text API:', error.response.data)
+          setTranscription('');
+        }
+
       })
 
       //@ts-ignore
       setRecorder(recorder);
       setQstState(1);
-
+      
     } catch (error) {
       console.error('Error getting user media:', error);
       setTranscription("");
+      setQstState(0);
     }
   }
 

@@ -46,7 +46,7 @@ export default async function speak(textToSpeak : string, setAudioUrl: Dispatch<
     // You may want to play the generated audio or display it in your application
     setAudioUrl(`data:audio/wav;base64,${response.data.audioContent}`);
 } catch (error) {
-    alert("Can't Speak");
+    // alert("Can't Speak");
     console.error('API Error:', error);
   }
 }

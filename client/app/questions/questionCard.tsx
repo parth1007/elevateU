@@ -14,6 +14,8 @@ import {audioBlobToBase64, convertToMP3} from '@/util/transcribe';
 import axios from 'axios';
 import speak from '@/util/textToSpeech';
 import 'regenerator-runtime/runtime'
+
+//@ts-ignore
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 type CardDataFormat = {
@@ -22,77 +24,78 @@ type CardDataFormat = {
   "idx": number,
   "total": number
 }
-// type SpeakProps = Pick<TTSHookProps, 'children'>
+type SpeakProps = Pick<TTSHookProps, 'children'>
 
-// const Speak = ({ children }: SpeakProps) => (
-//   <>{useTts({ children, autoPlay: true }).ttsChildren}</>
-// )
+const Speak = ({ children }: SpeakProps) => (
+  <>{useTts({ children, autoPlay: true }).ttsChildren}</>
+)
 
 
 
-function SpeakerApp() {
-  const { transcript, resetTranscript } = useSpeechRecognition();
-  const [isListening, setIsListening] = useState(false);
-  const microphoneRef = useRef(null);
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return (
-      <div className="mircophone-container">
-        Browser is not Support Speech Recognition.
-      </div>
-    );
-  }
-  const handleListing = () => {
-    setIsListening(true);
-    // @ts-ignore
-    microphoneRef.current.classList.add("listening");
-    SpeechRecognition.startListening({
-      continuous: true,
-    });
-  };
-  const stopHandle = () => {
-    console.log(transcript)
-    setIsListening(false);
-    // @ts-ignore
-    microphoneRef.current.classList.remove("listening");
-    SpeechRecognition.stopListening();
-    console.log("this:", transcript)
+// function SpeakerApp() {
+//   const { transcript, resetTranscript } = useSpeechRecognition();
+//   const [isListening, setIsListening] = useState(false);
+//   const microphoneRef = useRef(null);
+//   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+//     return (
+//       <div className="mircophone-container">
+//         Browser is not Support Speech Recognition.
+//       </div>
+//     );
+//   }
+//   const handleListing = () => {
+//     setIsListening(true);
+//     // @ts-ignore
+//     microphoneRef.current.classList.add("listening");
+//     SpeechRecognition.startListening({
+//       continuous: true,
+//     });
+    
+//   };
+//   const stopHandle = () => {
+//     console.log(transcript)
+//     setIsListening(false);
+//     // @ts-ignore
+//     microphoneRef.current.classList.remove("listening");
+//     SpeechRecognition.stopListening();
+//     console.log("this:", transcript)
 
-  };
-  const handleReset = () => {
-    stopHandle();
-    resetTranscript();
-  };
-  return (
-    <div className="microphone-wrapper">
-      <div className="mircophone-container">
-        <div
-          className="microphone-icon-container"
-          ref={microphoneRef}
-          onClick={handleListing}
-        >
-          {/* <img src={microPhoneIcon} className="microphone-icon" /> */}
-          <p>Speak</p>
-        </div>
-        <div className="microphone-status">
-          {isListening ? "Listening........." : "Click to start Listening"}
-        </div>
-        {isListening && (
-          <button className="microphone-stop btn" onClick={stopHandle}>
-            Stop
-          </button>
-        )}
-      </div>
-      {transcript && (
-        <div className="microphone-result-container">
-          <div className="microphone-result-text">{transcript}</div>
-          <button className="microphone-reset btn" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
+//   };
+//   const handleReset = () => {
+//     stopHandle();
+//     resetTranscript();
+//   };
+//   return (
+//     <div className="microphone-wrapper">
+//       <div className="mircophone-container">
+//         <div
+//           className="microphone-icon-container"
+//           ref={microphoneRef}
+//           onClick={handleListing}
+//         >
+//           {/* <img src={microPhoneIcon} className="microphone-icon" /> */}
+//           <p>Speak</p>
+//         </div>
+//         <div className="microphone-status">
+//           {isListening ? "Listening........." : "Click to start Listening"}
+//         </div>
+//         {isListening && (
+//           <button className="microphone-stop btn" onClick={stopHandle}>
+//             Stop
+//           </button>
+//         )}
+//       </div>
+//       {transcript && (
+//         <div className="microphone-result-container">
+//           <div className="microphone-result-text">{transcript}</div>
+//           <button className="microphone-reset btn" onClick={handleReset}>
+//             Reset
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
 
 
 
@@ -109,25 +112,25 @@ export default function Question({
 }) {
 
   // Text to Speech
-  // const [audioUrl, setAudioUrl] = useState<string>('');
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string>('');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // const makeSpeech = async () => {
-  //   await speak(questionData.question, setAudioUrl);
+  const makeSpeech = async () => {
+    await speak(questionData.question, setAudioUrl);
     
-  // }
+  }
   // Call the function to make the API request
-  // useEffect(() => {
-  //   // makeSpeech()
-  //   makeSpeech();
-  // }, [])
+  useEffect(() => {
+    // makeSpeech()
+    makeSpeech();
+  }, [])
 
-  // useEffect(() => {
-  //   if (audioRef.current) {
-  //     //@ts-ignore
-  //     audioRef.current.play();
-  //   }
-  // }, [audioUrl])
+  useEffect(() => {
+    if (audioRef.current) {
+      //@ts-ignore
+      audioRef.current.play();
+    }
+  }, [audioUrl, audioRef.current, audioRef])
 
 
   
@@ -138,121 +141,52 @@ export default function Question({
   // 1 -> Done --> on click end listening --> show transcribed ans
   // 2 -> Next --> on click submit and move to next question
 
-  const [audioBlob, setAudioBlob] = useState(new Blob);
-  const [recorder, setRecorder] = useState(null);
-  const [transcription, setTranscription] = useState("");
-
-  // Cleanup function to stop recording and release media resources
-  // useEffect(() => {
-  //   return () => {
-  //     if (recorder) {
-  //       //@ts-ignore
-  //       recorder.stream.getTracks().forEach(track => track.stop());
-  //     }
-  //   };
-  // }, [recorder]);
+  // const [audioBlob, setAudioBlob] = useState(new Blob);
+  // const [recorder, setRecorder] = useState(null);
+  // const [transcription, setTranscription] = useState("");
 
 
-    const startListening = async () => {
-        return 1;
+
+
+
+  const { transcript, resetTranscript } = useSpeechRecognition();
+  const [isListening, setIsListening] = useState(false);
+  const microphoneRef = useRef<HTMLDivElement | null>(null);
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    return (
+      <div className="mircophone-container">
+        Browser is not Support Speech Recognition.
+      </div>
+    );
+  }
+  const handleListing = () => {
+    setIsListening(true);
+
+    if (microphoneRef.current) {
+      microphoneRef.current.classList.add("listening");
     }
+    SpeechRecognition.startListening({
+      continuous: true,
+    });
+    setQstState(1);
+  };
+  const stopHandle = () => {
+    console.log("hhh",transcript)
+    setIsListening(false);
+    if (microphoneRef.current) {
+      microphoneRef.current.classList.remove("listening");
+    }
+    SpeechRecognition.stopListening();
+    console.log("this:", transcript)
 
-    
+    setQstState(2);
 
+  };
+  const handleReset = () => {
+    stopHandle();
+    resetTranscript();
+  };
 
-
-
-
-  // const startListening = async () => {
-  //   try {
-  //     setQstState(1);
-  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //     const recorder = new MediaRecorder(stream);
-  //     recorder.start();
-
-  //     let recData : Blob[] = [];
-
-  //     recorder.addEventListener('start', e => {
-  //       recData.length = 0;
-  //     })
-
-  //     recorder.addEventListener('dataavailable', async (event: BlobEvent) => {
-  //       // console.log(event.data);
-  //       recData.push(event.data)
-  //     });
-
-  //     recorder.addEventListener('stop', async () => {
-  //       //@ts-ignore
-  //       const finData = new Blob(recData, {
-  //         'type': 'audio/mp3'
-  //       });
-  //       console.log(finData);
-        
-  //       // API Call to Eden
-  //       try{
-  //         const startTime = performance.now();
-          
-  //         const apiConfig = {
-  //           "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_KEY_EDEN}`,
-  //         }
-
-  //         const response = await axios.post(
-  //           `https://api.edenai.run/v2/audio/speech_to_text_async`,
-  //           apiConfig,
-  //           // data: {
-
-  //           // }
-  //           );
-
-  //         const endTime = performance.now();
-  //         const elapsedTime = endTime - startTime;
-  //         console.log('Time taken (ms):', elapsedTime);
-
-  //         if (response.data.results && response.data.results.length > 0) {
-  //           setTranscription(response.data.results[0].alternatives[0].transcript);
-  //         } else {
-  //           console.log('No transcription results in the API response:', response.data);
-  //           setTranscription('');
-  //         }
-
-  //       } catch(error){
-  //         //@ts-ignore
-  //         console.error('Error with Google Speech-to-Text API:', error.response.data)
-  //         setTranscription('');
-  //       }
-
-  //     })
-
-  //     //@ts-ignore
-  //     setRecorder(recorder);
-  //     setQstState(1);
-      
-  //   } catch (error) {
-  //     console.error('Error getting user media:', error);
-  //     setTranscription("");
-  //     setQstState(0);
-  //   }
-  // }
-
-  
-  // const startListening = async () => {
-  //   setQstState(1);
-  //   navigator.mediaDevices.getUserMedia({ audio: true }).then(async (stream) => {
-  //     // @ts-ignore
-  //     setAudioStream(stream);
-
-  //   });
-  // }
-
-  // const endListening = () => {
-  //   if (recorder) {
-  //     //@ts-ignore
-  //     recorder.stop();
-  //     console.log('Recording stopped', recorder);
-  //     setQstState(2);
-  //   }
-  //   setQstState(2);
-  // }
 
   return (
     <Collapsible
@@ -269,19 +203,20 @@ export default function Question({
             </div>
           </div>
           <CardTitle className='text-gray-600 leading-8 pr-4'>
-            {/* <Speak>
+            <Speak>
               {questionData.question}
-            </Speak> */}
+            </Speak>
           </CardTitle>
       </CardHeader>
-      <SpeakerApp/>
+      {/* <SpeakerApp/> */}
       <Separator/>
       <CollapsibleContent>
           <CardContent className='bg-[#fafbfc] p-4'>
             <div className='w-full flex gap-4 items-center pl-3'>
               <Text className='text-gray-700'></Text>
               <p className='text-gray-500 text-lg font-medium'>
-                Transcribing answer...
+                {/* Transcribing answer... */}
+                {transcript}
               </p>
             </div>
           </CardContent>
@@ -291,7 +226,7 @@ export default function Question({
           <div className='flex w-full justify-between items-center'>
           <div>
               <Button className='h-12 w-12 accent-blue-600 outline-blue-600 outline-1 bg-blue-50' variant={'outline'} size={'icon'}>
-              {/* <Speaker className='h-8 w-8 text-blue-600 font-thin' onClick={makeSpeech}></Speaker> */}
+              <KeyboardIcon className='h-8 w-8 text-blue-600 font-thin' onClick={makeSpeech}></KeyboardIcon>
               </Button>
           </div>
           <div className='flex gap-4 items-center'>
@@ -305,7 +240,11 @@ export default function Question({
               {
                 (qstState === 0) && (
                   <CollapsibleTrigger asChild>
-                    <Button className='bg-blue-600 h-12 px-6 hover:bg-blue-700 hover:shadow-md' onClick={startListening}>
+                    <Button className='bg-blue-600 h-12 px-6 hover:bg-blue-700 hover:shadow-md' 
+                      // @ts-ignore
+                      ref={microphoneRef}
+                      onClick={handleListing}
+                    >
                       <Mic className='h-6 w-6'></Mic>
                       <span className='pl-2 text-lg'>
                           Answer
@@ -315,13 +254,13 @@ export default function Question({
                 ) 
               }
               {  
-                (qstState === 1) && ( 1
-                  // <Button className='bg-blue-600 h-12 px-6 hover:bg-blue-700 hover:shadow-md' onClick={endListening}>
-                  //   <Check className='h-6 w-6'></Check>
-                  //   <span className='pl-2 text-lg'>
-                  //       Done
-                  //   </span>
-                  // </Button>
+                (qstState === 1) && ( 
+                  <Button className='bg-blue-600 h-12 px-6 hover:bg-blue-700 hover:shadow-md' onClick={stopHandle}>
+                    <Check className='h-6 w-6'></Check>
+                    <span className='pl-2 text-lg'>
+                        Done
+                    </span>
+                  </Button>
                 )
               } 
               {

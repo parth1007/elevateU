@@ -58,6 +58,7 @@ export default function Analyses() {
   
   const router = useRouter()
   const [qsts, setqsts] = useState(data);
+  const [qstsTemp, setqstsTemp] = useState([]);
   const [curQst, setqst] = useState(0);
 
   const nextQst = () => {
@@ -67,26 +68,41 @@ export default function Analyses() {
     setqst((curQst) => curQst-1)
   }
 
+  const FilterPipeline = (data : string) => {
+    const parsedData = JSON.parse(data)    
+    const parsedList = parsedData.split('\n');
+    // @ts-ignore
+    const finalList = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
+    // @ts-ignore
+    const finalListWoBlank = finalList.filter(itm => itm.trim() !== '');
+    return finalListWoBlank
+  }
+  const ProcessPipeline = (data : string, attr: string) => {
+      const vals : string[] = FilterPipeline(JSON.parse(data));
+      // console.log(questions)
+      let questionsFormatted = [];
+      for (const el of vals) {
+        questionsFormatted.push({
+          attr: el
+        });
+      }
+  }
+
   useEffect(() => {
     const getDataFromLocalStorage = () => {
+      
+      // Question Data
       const questionsData = localStorage.getItem('questionsData'); 
       if (questionsData) {
-        const parsedData = JSON.parse(questionsData);
-  
-        const parsedList = parsedData.split('\n');
-  
-        // @ts-ignore
-        const questions = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
-  
-        // @ts-ignore
-        const filteredDescriptions = questions.filter(question => question.trim() !== '');
-  
-        console.log(filteredDescriptions)
+        ProcessPipeline(questionsData, 'question')
+      }
 
-        // setqsts(parsedList);
+      // Response Data
+      const responsesData = localStorage.getItem('responsesData'); 
+      if (responsesData) {
+        ProcessPipeline(responsesData, 'response')
       }
     };
-  
     getDataFromLocalStorage();
   }, []);
 

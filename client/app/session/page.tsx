@@ -39,6 +39,7 @@ import {
 import {
   Separator,
 } from "@/components/ui/separator"
+import { UploadJD } from "./JobDescDialog";
 
 
 
@@ -84,6 +85,7 @@ export default function Session() {
           <Input className="focus:outline-2 focus:outline-blue-600 text-base font-normal"></Input>
         </div>
         <div>
+          <div className="flex flex-col gap-2">
             <div className="border-[1px] min-h-[3rem] mt-6 rounded-lg cursor-pointer">
               <Dialog>
                 <div className="relative">
@@ -180,6 +182,8 @@ export default function Session() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
+            </div>
+            <UploadJD />
             </div>
             <div className="flex flex-col text-lg font-medium text-gray-700 gap-4 mt-8">
               <span className="flex-none">What are you Aiming for:</span> 

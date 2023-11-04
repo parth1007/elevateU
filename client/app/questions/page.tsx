@@ -50,10 +50,10 @@ export default function Questions() {
       <div className="z-10 h-full w-full flex font-sans justify-center items-center">
         {
           qsts.map((qst, idx) => {
-            return (
+            return idx === curQst ? (
             <div key={qst.id} className={`flex-shrink-0 flex-grow-0 flex-none ${idx === curQst ? 'block' : 'hidden' }`}>
               <Question questionData={{...qst,idx,total:qsts.length}} curQstNum={idx} nextQst={nextQst}/>
-            </div>)
+            </div>) : <></>
             } )
         }
       </div>

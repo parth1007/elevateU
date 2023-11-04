@@ -7,7 +7,13 @@ import { Separator } from '@/components/ui/separator'
 import { ModeToggle } from '@/components/ui/toggle-theme'
 import { ArrowRight, Check, KeyboardIcon, Mic, Text } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react';
+import { useTts } from 'tts-react'
+import type { TTSHookProps } from 'tts-react'
+import React, { useState, useEffect } from 'react';
+import {audioBlobToBase64, convertToMP3} from '@/util/transcribe';
+import axios from 'axios';
+
+type SpeakProps = Pick<TTSHookProps, 'children'>
 
 type CardDataFormat = {
   "question" : string,
@@ -15,6 +21,10 @@ type CardDataFormat = {
   "idx": number,
   "total": number
 }
+
+const Speak = ({ children }: SpeakProps) => (
+  <>{useTts({ children, autoPlay: true }).ttsChildren}</>
+)
 
 export default function Question({ 
   questionData,
@@ -33,14 +43,74 @@ export default function Question({
   // 1 -> Done --> on click end listening --> show transcribed ans
   // 2 -> Next --> on click submit and move to next question
 
-  const [qstAns, setQstAns] = useState("");
-  
+  const [audioBlob, setAudioBlob] = useState(new Blob);
+  const [recorder, setRecorder] = useState(null);
+  const [transcription, setTranscription] = useState("");
+
+  // Cleanup function to stop recording and release media resources
+  useEffect(() => {
+    return () => {
+      if (recorder) {
+        //@ts-ignore
+        recorder.stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [recorder]);
+
   const startListening = async () => {
-    setQstState(1);
-    setQstAns("Ans");
+    try {
+      setQstState(1);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      recorder.start();
+
+      let recData : Blob[] = [];
+
+      recorder.addEventListener('start', e => {
+        recData.length = 0;
+      })
+
+      recorder.addEventListener('dataavailable', async (event: BlobEvent) => {
+        // console.log(event.data);
+        recData.push(event.data)
+      });
+
+      recorder.addEventListener('stop', () => {
+        //@ts-ignore
+        const finData = new Blob(recData, {
+          'type': 'audio/mp3'
+        });
+
+        console.log(finData);
+      })
+
+      //@ts-ignore
+      setRecorder(recorder);
+      setQstState(1);
+
+    } catch (error) {
+      console.error('Error getting user media:', error);
+      setTranscription("");
+    }
   }
+
   
+  // const startListening = async () => {
+  //   setQstState(1);
+  //   navigator.mediaDevices.getUserMedia({ audio: true }).then(async (stream) => {
+  //     // @ts-ignore
+  //     setAudioStream(stream);
+
+  //   });
+  // }
+
   const endListening = () => {
+    if (recorder) {
+      //@ts-ignore
+      recorder.stop();
+      console.log('Recording stopped', recorder);
+      setQstState(2);
+    }
     setQstState(2);
   }
 
@@ -58,7 +128,11 @@ export default function Question({
               <div className='w-max text-blue-600 font-medium'>{`/ ${questionData.total}`}</div>
             </div>
           </div>
-          <CardTitle className='text-gray-600 leading-8 pr-4'>{questionData.question ? questionData.question : 'Can you please tell me a bit about yourself?'}</CardTitle>
+          <CardTitle className='text-gray-600 leading-8 pr-4'>
+            <Speak>
+              {questionData.question}
+            </Speak>
+          </CardTitle>
       </CardHeader>
       <Separator/>
       <CollapsibleContent>

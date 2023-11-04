@@ -91,13 +91,12 @@ export default function Analysis({
 
                   <Tabs defaultValue="account" className="w-full">
                       <TabsList className="grid w-full grid-cols-2 p-2 h-auto">
-                        <TabsTrigger value="account" className="text-base text-gray-800">Analysis</TabsTrigger>
-                        <TabsTrigger value="password" className="text-base text-gray-800">Your Response</TabsTrigger>
+                        <TabsTrigger value="account" className="text-base text-gray-800 data-[state=active]:bg-white data-[state=active]:drop-shadow-sm">Analysis</TabsTrigger>
+                        <TabsTrigger value="password" className="text-base text-gray-800 data-[state=active]:bg-white data-[state=active]:drop-shadow-sm">Your Response</TabsTrigger>
                       </TabsList>
-                      <TabsContent value="account">
-                        <Card className='bg-transparent'>
-                          <CardHeader>
-                            {/* <CardTitle>Analysis</CardTitle> */}
+                      <TabsContent value="account" className='bg-transparent outline-none ring-0'>
+                        <Card className='outline-0 border-0 p-0 m-0 bg-transparent shadow-none'>
+                          <CardHeader className='p-4'>
                             <CardDescription>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit voluptas cupiditate velit minima accusamus mollitia ad praesentium voluptate eveniet. Similique illo repellendus ratione, sint qui, fugit aut quibusdam excepturi sequi sapiente optio, voluptates facere quod sed blanditiis eum temporibus iste placeat facilis libero iure praesentium? Dolores magnam distinctio neque, odio molestiae, tempore nobis maiores quibusdam commodi veritatis illo ratione provident at. Recusandae sapiente ut accusantium quasi non doloremque! Animi, nulla sed consequatur esse quas quibusdam corporis consectetur illo repudiandae beatae, iure magni! Maiores ipsa id earum, perferendis eum suscipit eveniet at molestias cum excepturi, reprehenderit laboriosam velit. Itaque accusamus, corrupti repellat vel sunt maxime. Numquam sed iusto quos, magnam quo accusamus rem, laboriosam ad blanditiis, magni tempora beatae expedita praesentium quasi? Officiis eos, commodi distinctio fugit dolorum neque animi dicta quibusdam soluta quaerat maiores illum nesciunt magnam enim beatae, tempora illo deserunt minus. Reiciendis, maxime eos quisquam voluptatum repudiandae id doloremque delectus atque dolores enim suscipit hic modi saepe, laborum deleniti. Tenetur corporis a iure, quo dolor recusandae voluptates commodi. Corrupti corporis itaque molestias debitis deleniti dolores blanditiis sequi magnam a, ad similique quia, animi maxime quisquam eos ut quae mollitia fugiat excepturi? Tempora quidem inventore, sed id accusantium similique, ipsam incidunt excepturi voluptatem in quia ullam maiores eos officia rem numquam quaerat placeat saepe et quisquam consectetur beatae cumque aliquid. Quaerat dolor sequi maiores facilis vel, reprehenderit, enim atque unde nulla dolore libero aliquid nam laudantium placeat sapiente corporis? Repellendus nulla reiciendis maxime nostrum libero deserunt saepe labore, illo velit ut corrupti dicta modi corporis.
                             </CardDescription>
@@ -106,8 +105,8 @@ export default function Analysis({
                         </Card>
                       </TabsContent>
                       <TabsContent value="password">
-                        <Card className='bg-transparent'>
-                          <CardHeader>
+                        <Card className='outline-0 border-0 p-0 m-0 bg-transparent shadow-none'>
+                          <CardHeader className='p-4'>
                             <CardDescription>
                               Response...
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit voluptas cupiditate velit minima accusamus mollitia ad praesentium voluptate eveniet. Similique illo repellendus ratione, sint qui, fugit aut quibusdam excepturi sequi sapiente optio, voluptates facere quod sed blanditiis eum temporibus iste placeat facilis libero iure praesentium? Dolores magnam distinctio neque, odio molestiae, tempore nobis maiores quibusdam commodi veritatis illo ratione provident at. Recusandae sapiente ut accusantium quasi non doloremque! Animi, nulla sed consequatur esse quas quibusdam corporis consectetur illo repudiandae beatae, iure magni! Maiores ipsa id earum, perferendis eum suscipit eveniet at molestias cum excepturi, reprehenderit laboriosam velit. Itaque accusamus, corrupti repellat vel sunt maxime. Numquam sed iusto quos, magnam quo accusamus rem, laboriosam ad blanditiis, magni tempora beatae expedita praesentium quasi? Officiis eos, commodi distinctio fugit dolorum neque animi dicta quibusdam soluta quaerat maiores illum nesciunt magnam enim beatae, tempora illo deserunt minus. Reiciendis, maxime eos quisquam voluptatum repudiandae id doloremque delectus atque dolores enim suscipit hic modi saepe, laborum deleniti. Tenetur corporis a iure, quo dolor recusandae voluptates commodi. Corrupti corporis itaque molestias debitis deleniti dolores blanditiis sequi magnam a, ad similique quia, animi maxime quisquam eos ut quae mollitia fugiat excepturi? Tempora quidem inventore, sed id accusantium similique, ipsam incidunt excepturi voluptatem in quia ullam maiores eos officia rem numquam quaerat placeat saepe et quisquam consectetur beatae cumque aliquid. Quaerat dolor sequi maiores facilis vel, reprehenderit, enim atque unde nulla dolore libero aliquid nam laudantium placeat sapiente corporis? Repellendus nulla reiciendis maxime nostrum libero deserunt saepe labore, illo velit ut corrupti dicta modi corporis.

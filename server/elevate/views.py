@@ -21,16 +21,14 @@ def generate_prompt(keywords, difficulty, prompt_type=None):
 
 def generate_analysis_prompt(question, answer):
     
-    prompt = f"Interviewer\'s question -  {question} \nMy answer - {answer} \nGive a short and crisp analysis of my answer to the interviewer\'s question in not more than 100 words. The format of the structured analysis should be as follows- \n1) Relevance and Accuracy\n2) Depth of knowledge\n3) Confidence and Clarity\n4) my strong topics\n5) my weak topics\nKeep the analysis to the point. Also rate my answer on a scale of 10 and give the rating at the end as \"Rating - \". Don\'t include extra words above or after the analysis."
+    prompt = f"Interviewer\'s question -  {question} \nMy answer - {answer} \nGive a short and crisp analysis of my answer to the interviewer\'s question in not more than 100 words. The format of the structured analysis should be as follows- \nRelevance and Accuracy: \nDepth of knowledge: \nConfidence and Clarity: \nStrong topics: \nWeak topics: \nKeep the analysis to the point. Also rate my answer on a scale of 10 and give the rating at the end as \"Rating: \". Don\'t include extra words above or after the analysis."
     return prompt
 
 def send_request(keywords,difficulty):
 
     try:
         prompt = generate_prompt(keywords,difficulty)
-        print("---------")
-        print(prompt)
-        print("---------\n")
+        
         if prompt:
             openai.api_key = OPENAI_API_KEY
 
@@ -48,13 +46,25 @@ def send_request(keywords,difficulty):
     except:
         raise PromptError("OpenAI API error")
 
+def modify_text(text): 
+
+    topics_list=text.split('\n')
+    modified_text={}
+    
+    for topic in topics_list:
+        topic=topic.strip()
+        if topic!='': 
+            key,value=topic.split(": ")
+            modified_text[key]=value
+
+    return modified_text
+
+
 def send_analysis_request(question,answer):
 
     try:
         prompt = generate_analysis_prompt(question,answer)
-        print("---------")
-        print(prompt)
-        print("---------\n")
+        
         if prompt:
             openai.api_key = OPENAI_API_KEY
 
@@ -65,7 +75,10 @@ def send_analysis_request(question,answer):
             )
             generated_text = response.choices[0].text
 
-            return generated_text
+            modified_text=modify_text(generated_text)    
+            
+            return JsonResponse(modified_text)
+        
         else:
             raise PromptError("Prompt is empty")
 

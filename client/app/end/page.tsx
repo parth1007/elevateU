@@ -11,6 +11,7 @@ import Link from 'next/link'
 import MainLogo from '../ElevateULogo'
 import MainLogoMini from '../ElevateULogoShort'
 import { ModeToggle } from '@/components/ui/toggle-theme'
+import { FinalAnalysis } from "./AnalysisDialog";
 import axios from "axios";
 
 type CardDataFormat = {
@@ -185,21 +186,21 @@ export default function Analyses() {
         <div className="flex gap-8 mt-10 justify-center items-center">
           <div className="h-32 w-32 shrink-0 grow-0 flex-none">
             <CircularProgressbar 
-              // value={netScore} text={`${netScore} / 10`} maxValue={10}
-              value={7.5} text={`7.5 / 10`} maxValue={10}
+              value={netScore || 3.5} text={`${netScore || 3.5} / 10`} maxValue={10}
+              // value={7.5} text={`7.5 / 10`} maxValue={10}
               styles={buildStyles({
                 pathColor: `#1d4ed8`,
                 textColor: '#1d4ed8',
-                trailColor: '#f7f8fa',
+                trailColor: '#dbeafe',
                 backgroundColor: '#eff6ff',
                 textSize: '20px',
               })}
              />
           </div>
-          <p className="text-base text-gray-600 leading-6 h-max">
-            {`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}
-            {/* {finalAnalysis} */}
-          </p>
+          <div className="text-base text-gray-600 leading-6 h-max flex flex-col">
+            <p>{`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}</p>
+            <div className="flex">{<FinalAnalysis data={finalAnalysis}/>}</div>
+          </div>
         </div>
       </div>
       <div className="z-10 h-fit pt-8 pb-8 w-full flex font-sans justify-center items-start">

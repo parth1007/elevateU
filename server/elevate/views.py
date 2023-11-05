@@ -21,7 +21,7 @@ def generate_questions_prompt(keywords, difficulty, prompt_type=None):
 
 def generate_analysis_prompt(question, answer):
     
-    prompt = f"Interviewer\'s question -  {question} \nMy answer - {answer} \nGive a short and crisp analysis of my answer to the interviewer\'s question in not more than 100 words. The format of the structured analysis should be as follows- \nRelevance and Accuracy: \nDepth of knowledge: \nConfidence and Clarity: \nStrong topics: \nWeak topics: \nKeep the analysis to the point. Also rate my answer on a scale of 10 and give the rating at the end as \"Rating: \". Don\'t include extra words above or after the analysis."
+    prompt = f"Interviewer\'s question -  {question} \nMy answer - {answer} \nGive a short and crisp analysis of my answer to the interviewer\'s question in not more than 100 words. The format of the structured analysis should be as follows- \nRelevance and Accuracy: \nDepth of knowledge: \nConfidence and Clarity: \nStrong topics: \nWeak topics: \nKeep the analysis to the point. Also rate my answer on a scale of 10 and give the rating at the end as \"Rating: \". Give the analysis in second person speech. Don\'t include extra words above or after the analysis."
     return prompt
 
 

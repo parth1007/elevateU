@@ -11,6 +11,7 @@ import Link from 'next/link'
 import MainLogo from '../ElevateULogo'
 import MainLogoMini from '../ElevateULogoShort'
 import { ModeToggle } from '@/components/ui/toggle-theme'
+import axios from "axios";
 
 type CardDataFormat = {
   "question" : string,
@@ -23,57 +24,12 @@ type CardDataFormat = {
   "Strong topics": string | null,
   "Weak topics": string | null,
 }
+const HOST = "http://localhost:8000/"
 
-// const data : CardDataFormat[] = [
-//   {
-//     "question" : "Explain the concepts of inheritance, encapsulation, and polymorphism in OOP. Provide an example for each.",
-//     "id": 0,
-//     "response" : "Question 1 response",
-//     "analysis" : "Analyze question 1 response",
-//     "score" : 8
-//   },
-//   {
-//     "question" : "Design a URL shortening service like Bitly. Discuss the key components and considerations in your design.",
-//     "id": 1,
-//     "response" : "Question 2 response",
-//     "analysis" : "Analyze question 2 response",
-//     "score" : 5
-//   },
-//   {
-//     "question" : "What is the difference between TCP and UDP? When would you choose one over the other for a network application?",
-//     "id": 2,
-//     "response" : "Question 3 response",
-//     "analysis" : "Analyze question 3 response",
-//     "score" : 7
-//   },
-//   {
-//     "question" : "Explain the difference between a process and a thread in the context of an operating system. What are the advantages of using threads over processes?",
-//     "id": 3,
-//     "response" : "Question 4 response",
-//     "analysis" : "Analyze question 4 response",
-//     "score" : 9
-//   },
-//   {
-//     "question" : "Implement a function to check if a given string is a palindrome. Describe the time and space complexity of your solution.",
-//     "id": 4,
-//     "response" : "Question 5 response",
-//     "analysis" : "Analyze question 5 response",
-//     "score" : 9
-//   },
-// ]
 
-const FilterPipeline = (data : string | null) => {
-  
-  if(!data) return []
 
-  const parsedData = JSON.parse(data)    
-  const parsedList = parsedData.split('\n');
-  // @ts-ignore
-  const finalList = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
-  // @ts-ignore
-  const finalListWoBlank = finalList.filter(itm => itm.trim() !== '');
-  return finalListWoBlank
-}
+
+
 
 
 export default function Analyses() {
@@ -84,6 +40,7 @@ export default function Analyses() {
   const [curQst, setqst] = useState(0);
   const [netScore, setNetScore] = useState(0);
   const [totQsts, setTotQsts] = useState(0);
+  const [finalAnalysis,setFinalAnalysis] = useState("")
 
   const nextQst = () => {
     setqst((curQst) => curQst+1)
@@ -93,9 +50,28 @@ export default function Analyses() {
   }
 
 
-  const getAnalysis = () => {
-    
-  }
+  const testCall = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+        const input_data ={
+          "combined_analysis" : localStorage.getItem('analysis'),
+        }
+        console.log(input_data)
+
+        const {data} = await axios.post(`${HOST}final/`,input_data, config);
+        console.log(data)
+        setFinalAnalysis(data);
+        
+      } catch (error) {
+        alert("Some error occured. Please try again");
+        console.log(error);
+      }
+}
+
   
   const filterPipeline = (data : string) => {
 
@@ -110,6 +86,7 @@ export default function Analyses() {
   }
 
   useEffect(() => {
+    
     const getDataFromLocalStorage = () => {
 
       let cummulData : CardDataFormat[] = []
@@ -180,6 +157,8 @@ export default function Analyses() {
       setqsts(cummulData)
     };
     getDataFromLocalStorage();
+
+    testCall();
   }, []);
 
 
@@ -206,7 +185,8 @@ export default function Analyses() {
         <div className="flex gap-8 mt-10 justify-center items-center">
           <div className="h-32 w-32 shrink-0 grow-0 flex-none">
             <CircularProgressbar 
-              value={netScore} text={`${netScore} / 10`} maxValue={10}
+              // value={netScore} text={`${netScore} / 10`} maxValue={10}
+              value={7.5} text={`7.5 / 10`} maxValue={10}
               styles={buildStyles({
                 pathColor: `#1d4ed8`,
                 textColor: '#1d4ed8',
@@ -218,6 +198,7 @@ export default function Analyses() {
           </div>
           <p className="text-base text-gray-600 leading-6 h-max">
             {`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}
+            {/* {finalAnalysis} */}
           </p>
         </div>
       </div>

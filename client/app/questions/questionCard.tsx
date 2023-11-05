@@ -109,10 +109,8 @@ export default function Question({
 
 
   // Send User response to Backend
-  const handleNext = async () => {
-
-    // @ts-ignore
-    const analyse_answer = async (e) => {
+  // @ts-ignore
+  const handleNext = async (e) => {
       
       e.preventDefault();
 
@@ -131,21 +129,29 @@ export default function Question({
           };
           const input_data ={
             "question" : question,
-            "response" : answer
+            "answer" : answer
           }
           console.log(input_data)
   
-          const {data} = await axios.post(`${HOST}`,input_data, config);
+          const {data} = await axios.post(`${HOST}analyse/`,input_data, config);
           console.log(data);
-          // localStorage.setItem("questionsData", JSON.stringify(data));
+
+          let analysisData = ""
+          if(localStorage.getItem("analysis")){
+            // @ts-ignore
+            analysisData = localStorage.getItem("analysis")
+          }
+          console.log(typeof(analysisData), typeof(JSON.stringify(data)))
+          localStorage.setItem("analysis", analysisData + "%%%" + JSON.stringify(data));
+
 
         } catch (error) {
           alert("Some error occured. Please try again");
           console.log(error);
         }
   
-    }
-    nextQst()
+    
+      nextQst()
   }
 
 
@@ -192,7 +198,7 @@ export default function Question({
           <div className='flex gap-4 items-center'>
               {
                 (qstState === 0) && (
-                  <Button className='h-12 w-16 accent-blue-600 outline-blue-600 outline-1 text-md text-blue-600 hover:text-blue-700 bg-blue-50' variant={'outline'} onClick={nextQst}>
+                  <Button className='h-12 w-16 accent-blue-600 outline-blue-600 outline-1 text-md text-blue-600 hover:text-blue-700 bg-blue-50' variant={'outline'} onClick={handleNext}>
                     {questionData.idx !== questionData.total-1 ? "Skip" : "End" }
                   </Button>
                 )
@@ -240,3 +246,5 @@ export default function Question({
     </Collapsible>
   )
 }
+
+

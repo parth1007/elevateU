@@ -5,8 +5,12 @@ import Analysis from "./analysisCard";
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
-import { CircularProgressbar } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import Link from 'next/link'
+import MainLogo from '../ElevateULogo'
+import MainLogoMini from '../ElevateULogoShort'
+import { ModeToggle } from '@/components/ui/toggle-theme'
 
 type CardDataFormat = {
   "question" : string,
@@ -111,12 +115,31 @@ export default function Analyses() {
 
 
   return (
+    <>
+    <nav className="flex w-screen absolute top-0 left-0 justify-between">
+      <Link href="/">
+        <MainLogoMini className="h-16 w-16 mt-4 ml-4" />
+      </Link>
+      {/* <div className="h-16 w-16 mt-4 ml-4">
+        <ModeToggle/>
+      </div> */}
+    </nav>
     <main className="flex min-h-screen flex-col items-center justify-between p-24 text-slate-800 bg-[#f7f8fa] ">
       <div className="w-3xl max-w-3xl flex flex-col">
         <p className="text-3xl font-semibold text-gray-600 text-center align-middle">{`🎊 Congrats, you did it! Let's review.`}</p>
         <div className="flex gap-8 mt-10 justify-center items-center">
           <div className="h-32 w-32 shrink-0 grow-0 flex-none">
-            <CircularProgressbar value={8} text={`8 / 10`} maxValue={10} className="text-blue-600"/>
+            <CircularProgressbar 
+              value={8} text={`8 / 10`} maxValue={10}
+              styles={buildStyles({
+                pathColor: `#1d4ed8`,
+                textColor: '#1d4ed8',
+                trailColor: '#f7f8fa',
+                backgroundColor: '#eff6ff',
+                pathTransitionDuration: 1500,
+                textSize: '20px',
+              })}
+             />
           </div>
           <p className="text-base text-gray-600 leading-6 h-max">
             {`Use the insight buttons to learn more about your answers. Try to reflect on what you said from the perspective of an interviewer. Identify what you'd like to improve, then practice again.`}
@@ -134,11 +157,17 @@ export default function Analyses() {
         }
       </div>
       <div>
-        <Button variant={'outline'} className="bg-blue-50 hover:bg-blue-50 text-blue-600 hover:text-blue-700 text-md font-medium py-3 px-4" onClick={() => {deleteFromLocalStorage("questionsData")}}>
+        <Button variant={'outline'} className="bg-blue-50 hover:bg-blue-50 text-blue-600 hover:text-blue-700 text-md font-medium py-3 px-4" 
+          onClick={() => {
+            deleteFromLocalStorage("questionsData");
+            deleteFromLocalStorage("analysis")
+            router.push('/session', { scroll: false })
+          }}>
           <RotateCcw className="h-6 w-6"></RotateCcw>
           <span className="pl-2">Practice Again</span>
         </Button>
       </div>
     </main>
+    </>
   )
 }

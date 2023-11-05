@@ -1,12 +1,13 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Toaster } from "@/components/ui/toaster"
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'ElevateU',
+  title: 'Elevate',
   description: 'AI mock Interview',
 }
 
@@ -17,15 +18,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-        {/* <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
-          > */}
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange
+        >
         <body className={inter.className}>
           {children}
+          <Toaster />
         </body>
-      {/* </ThemeProvider> */}
+      </ThemeProvider>
     </html>
   )
 }

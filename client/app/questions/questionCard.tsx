@@ -134,15 +134,21 @@ export default function Question({
           console.log(input_data)
   
           const {data} = await axios.post(`${HOST}analyse/`,input_data, config);
-          console.log(data);
 
           let analysisData = ""
           if(localStorage.getItem("analysis")){
             // @ts-ignore
             analysisData = localStorage.getItem("analysis")
           }
-          console.log(typeof(analysisData), typeof(JSON.stringify(data)))
-          localStorage.setItem("analysis", analysisData + "%%%" + JSON.stringify(data));
+          localStorage.setItem("analysis", analysisData + "<SEP>" + JSON.stringify(data));
+
+
+          let responseData = ""
+          if(localStorage.getItem("responseData")){
+            // @ts-ignore
+            responseData = localStorage.getItem("responseData")
+          }
+          localStorage.setItem("responseData", responseData + "<SEP>" + JSON.stringify(answer));
 
 
         } catch (error) {

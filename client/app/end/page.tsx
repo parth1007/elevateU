@@ -14,49 +14,53 @@ import { ModeToggle } from '@/components/ui/toggle-theme'
 
 type CardDataFormat = {
   "question" : string,
-  "id": number,
-  "analysis": string,
-  "response": string,
-  "score": number
+  "analysis": string | null,
+  "response": string | null,
+  "Rating": number,
+  "Confidence and Clarity": string | null,
+  "Depth of knowledge": string | null,
+  "Relevance and Accuracy": string | null,
+  "Strong topics": string | null,
+  "Weak topics": string | null,
 }
 
-const data : CardDataFormat[] = [
-  {
-    "question" : "Explain the concepts of inheritance, encapsulation, and polymorphism in OOP. Provide an example for each.",
-    "id": 0,
-    "response" : "Question 1 response",
-    "analysis" : "Analyze question 1 response",
-    "score" : 8
-  },
-  {
-    "question" : "Design a URL shortening service like Bitly. Discuss the key components and considerations in your design.",
-    "id": 1,
-    "response" : "Question 2 response",
-    "analysis" : "Analyze question 2 response",
-    "score" : 5
-  },
-  {
-    "question" : "What is the difference between TCP and UDP? When would you choose one over the other for a network application?",
-    "id": 2,
-    "response" : "Question 3 response",
-    "analysis" : "Analyze question 3 response",
-    "score" : 7
-  },
-  {
-    "question" : "Explain the difference between a process and a thread in the context of an operating system. What are the advantages of using threads over processes?",
-    "id": 3,
-    "response" : "Question 4 response",
-    "analysis" : "Analyze question 4 response",
-    "score" : 9
-  },
-  {
-    "question" : "Implement a function to check if a given string is a palindrome. Describe the time and space complexity of your solution.",
-    "id": 4,
-    "response" : "Question 5 response",
-    "analysis" : "Analyze question 5 response",
-    "score" : 9
-  },
-]
+// const data : CardDataFormat[] = [
+//   {
+//     "question" : "Explain the concepts of inheritance, encapsulation, and polymorphism in OOP. Provide an example for each.",
+//     "id": 0,
+//     "response" : "Question 1 response",
+//     "analysis" : "Analyze question 1 response",
+//     "score" : 8
+//   },
+//   {
+//     "question" : "Design a URL shortening service like Bitly. Discuss the key components and considerations in your design.",
+//     "id": 1,
+//     "response" : "Question 2 response",
+//     "analysis" : "Analyze question 2 response",
+//     "score" : 5
+//   },
+//   {
+//     "question" : "What is the difference between TCP and UDP? When would you choose one over the other for a network application?",
+//     "id": 2,
+//     "response" : "Question 3 response",
+//     "analysis" : "Analyze question 3 response",
+//     "score" : 7
+//   },
+//   {
+//     "question" : "Explain the difference between a process and a thread in the context of an operating system. What are the advantages of using threads over processes?",
+//     "id": 3,
+//     "response" : "Question 4 response",
+//     "analysis" : "Analyze question 4 response",
+//     "score" : 9
+//   },
+//   {
+//     "question" : "Implement a function to check if a given string is a palindrome. Describe the time and space complexity of your solution.",
+//     "id": 4,
+//     "response" : "Question 5 response",
+//     "analysis" : "Analyze question 5 response",
+//     "score" : 9
+//   },
+// ]
 
 const FilterPipeline = (data : string | null) => {
   
@@ -75,10 +79,11 @@ const FilterPipeline = (data : string | null) => {
 export default function Analyses() {
   
   const router = useRouter()
-  const [qsts, setqsts] = useState(data);
+  const [qsts, setqsts] = useState<CardDataFormat[]>([]);
   const [qstsTemp, setqstsTemp] = useState<Object[]>([]);
   const [curQst, setqst] = useState(0);
   const [netScore, setNetScore] = useState(0);
+  const [totQsts, setTotQsts] = useState(0);
 
   const nextQst = () => {
     setqst((curQst) => curQst+1)
@@ -88,20 +93,91 @@ export default function Analyses() {
   }
 
 
+  const getAnalysis = () => {
+    
+  }
+  
+  const filterPipeline = (data : string) => {
+
+      const parsedData = JSON.parse(data);
+      const parsedList = parsedData.split('\n');
+      // @ts-ignore
+      const vals = parsedList.map(line=> line.slice(line.indexOf(' ') + 1));
+      // @ts-ignore
+      const filteredData = vals.filter(val => val.trim() !== '');
+
+      return filteredData;
+  }
+
   useEffect(() => {
     const getDataFromLocalStorage = () => {
 
-      const questionsData = FilterPipeline(localStorage.getItem('questionsData')); 
+      let cummulData : CardDataFormat[] = []
       
+      // Question Data
+      const questionsData = localStorage.getItem('questionsData'); 
+      if (questionsData) {
+        const data = filterPipeline(questionsData)
+
+        if(cummulData.length === 0){
+          cummulData = new Array(data.length).fill({})
+        }
+
+        cummulData = cummulData.map((el, idx) => {
+          return {
+            ...el,
+            'question' : data[idx]
+          }
+        })
+      }
+      
+      //analysis
+      const analysisData = localStorage.getItem('analysis'); 
+      if (analysisData) {
+        const parsedList = analysisData.split("<SEP>").filter(val => val.trim() !== '').map((el)=>JSON.parse(el));
+        cummulData = cummulData.map((el, idx) => {
+          return {
+            ...el,
+            ...parsedList[idx]
+          }
+        })
+      }
+
+      //response
+      const responseData = localStorage.getItem('responseData'); 
+      if (responseData) {
+        const parsedList = responseData.split("<SEP>").filter(val => val.trim() !== '');
+        cummulData = cummulData.map((el, idx) => {
+          return {
+            ...el,
+            'response': parsedList[idx] || "Not Answered"
+          }
+        })
+      }
+      cummulData = cummulData.map((el, idx) => {
+          let rat = 0;
+          if(el['Rating']){
+            //@ts-ignore
+            rat = parseInt(el['Rating'].split('/')[0])
+          }
+          return {
+            ...el,
+            'Rating' : rat
+          }
+      })
+
+      console.log(cummulData);
+      setqstsTemp(cummulData);
       
       // setqstsTemp(cummulData);
-      if(questionsData.length > 0){
-        questionsData.forEach(() => {
-          setNetScore((netScore) => netScore + questionsData.score)
+      if(cummulData.length > 0){
+        cummulData.forEach((el) => {
+          setNetScore((netScore) => netScore + el['Rating'])
         })
-
-        setNetScore((netScore) => netScore/questionsData.length)
+        setNetScore((netScore) => netScore/cummulData.length)
       }
+      setTotQsts(cummulData.length)
+      setqsts(cummulData)
     };
     getDataFromLocalStorage();
   }, []);
@@ -130,13 +206,12 @@ export default function Analyses() {
         <div className="flex gap-8 mt-10 justify-center items-center">
           <div className="h-32 w-32 shrink-0 grow-0 flex-none">
             <CircularProgressbar 
-              value={8} text={`8 / 10`} maxValue={10}
+              value={netScore} text={`${netScore} / 10`} maxValue={10}
               styles={buildStyles({
                 pathColor: `#1d4ed8`,
                 textColor: '#1d4ed8',
                 trailColor: '#f7f8fa',
                 backgroundColor: '#eff6ff',
-                pathTransitionDuration: 1500,
                 textSize: '20px',
               })}
              />
@@ -150,8 +225,8 @@ export default function Analyses() {
         {
           qsts.map((qst, idx) => {
             return (
-            <div key={qst.id} className={`flex-shrink-0 flex-grow-0 flex-none ${idx === curQst ? 'block' : 'hidden' }`}>
-              <Analysis questionData={{...qst,total:qsts.length}} curQstNum={idx+1} nextQst={nextQst} prevQst={prevQst}/>
+            <div key={idx} className={`flex-shrink-0 flex-grow-0 flex-none ${idx === curQst ? 'block' : 'hidden' }`}>
+              <Analysis questionData={{...qst}} totQstNum={totQsts} curQstNum={idx+1} nextQst={nextQst} prevQst={prevQst}/>
             </div>)
             } )
         }
@@ -161,6 +236,7 @@ export default function Analyses() {
           onClick={() => {
             deleteFromLocalStorage("questionsData");
             deleteFromLocalStorage("analysis")
+            deleteFromLocalStorage("responseData")
             router.push('/session', { scroll: false })
           }}>
           <RotateCcw className="h-6 w-6"></RotateCcw>

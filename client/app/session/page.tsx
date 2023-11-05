@@ -63,6 +63,7 @@ export default function Session() {
 
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+  const [customTag, setCustomTag] = useState("")
 
 
     // @ts-ignore
@@ -120,7 +121,10 @@ export default function Session() {
     }
     //@ts-ignore
     setSelectedTags(selectedTags => [...selectedTags, currentValue])
+  }
 
+  const addCustomTag = (currentValue: String) => {
+    console.log(currentValue)
   }
 
   return (
@@ -176,7 +180,15 @@ export default function Session() {
                       <DialogDescription className="text-sm">
                         {"Add the tags you want to take mock-interview for... Click save when you're done."}
                       </DialogDescription>
+
                     </DialogHeader>
+
+                    <div className="flex w-full items-center space-x-2">
+                        <Input value={customTag} onChange={(e) => {setCustomTag(e.target.value)}} type="email" placeholder="Add custom tag" className=""/>
+                        <Button type="submit" onClick={()=> insertTag(customTag)}>Add Tag</Button>
+                    </div>
+                    <Separator />
+
                     <div className="grid gap-4 pt-2 w-full">
                       <div className="grid grid-cols-4 items-center gap-4 w-full">
                         <Popover open={open} onOpenChange={setOpen}>
@@ -195,8 +207,9 @@ export default function Session() {
                             </PopoverTrigger>
                             <PopoverContent className="w-[675px] p-0">
                               <Command>
-                                <CommandInput placeholder="Search tag..." className="h-9" />
-                                <CommandEmpty>No tag found.</CommandEmpty>
+                                <CommandInput placeholder="Search tag..." className="h-9"/>
+                                
+                                <CommandEmpty>No Tag Found</CommandEmpty>
                                 <CommandGroup className="overflow-y-auto max-h-[15rem]">
                                   {tags.map((tag) => (
                                     <CommandItem
@@ -227,6 +240,7 @@ export default function Session() {
                       </div>
                     </div>
                     <Separator />
+                
                     <div className="flex flex-wrap gap-1">
                         {selectedTags.map((item, index) => (
                           <div key={index} className="flex pl-4 pr-2 py-2 border-[1px] rounded-full font-normal text-sm justify-center items-center">

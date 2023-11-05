@@ -19,21 +19,26 @@ import {
 
 type CardDataFormat = {
   "question" : string,
-  "id": number,
-  "analysis": string,
-  "response": string,
-  "score": number,
-  "total": number
+  "analysis": string | null,
+  "response": string | null,
+  "Rating": number,
+  "Confidence and Clarity": string | null,
+  "Depth of knowledge": string | null,
+  "Relevance and Accuracy": string | null,
+  "Strong topics": string | null,
+  "Weak topics": string | null,
 }
 
 export default function Analysis({ 
   questionData,
   curQstNum,
+  totQstNum,
   nextQst,
   prevQst
 } : {
   questionData:CardDataFormat,
   curQstNum:number,
+  totQstNum:number,
   nextQst: ()=>void
   prevQst: ()=>void
 }) {
@@ -44,10 +49,10 @@ export default function Analysis({
   const [scoreInfo, setScoreInfo] = useState(["text-","",""])
 
   const score_type = () => {
-      if(questionData.score <= 4){
+      if(questionData.Rating <= 4){
         setScoreInfo(["text-red-600", "😔", "Poor  "])
       }
-      else if(questionData.score <=7){
+      else if(questionData.Rating <=7){
         setScoreInfo(["text-orange-600", "😎", "Great!"])
       }
       else{
@@ -71,23 +76,26 @@ export default function Analysis({
             </Button>
             <div className='flex gap-1'>
               <div className='w-max text-gray-600 font-medium'>{curQstNum}</div>
-              <div className='w-max text-blue-600 font-medium'>{`/ ${questionData.total}`}</div>
+              <div className='w-max text-blue-600 font-medium'>{`/ ${totQstNum}`}</div>
             </div>
-            <Button size={'icon'} variant={`${curQstNum > 1 ? 'outline' : 'ghost'}`}  className={`${curQstNum < questionData.total ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'}`} disabled={curQstNum == questionData.total} onClick={nextQst}>
+            <Button size={'icon'} variant={`${curQstNum > 1 ? 'outline' : 'ghost'}`}  className={`${curQstNum < totQstNum ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'}`} disabled={curQstNum == totQstNum} onClick={nextQst}>
               <ArrowRight className='h-6 w-6 text-blue-600'/>
             </Button>
           </div>
-          <CardTitle className='text-gray-600 leading-8 pr-[1rem]'>{questionData.question ? questionData.question : 'Can you please tell me a bit about yourself?'}</CardTitle>
+          <CardTitle className='text-gray-600 leading-8 pr-[1rem] flex justify-between items-center gap-2'>
+            <span>{questionData.question ? questionData.question : 'Can you please tell me a bit about yourself?'}</span>
+            <span className="text-md text-blue-600 p-4 bg-blue-50 rounded-lg">{`${questionData.Rating}/10`}</span>
+          </CardTitle>
       </CardHeader>
       <Separator/>
       <CardContent className='pt-4 bg-[#fafbfc]'>
           <div className='flex w-full justify-center items-center'>
             <div className='flex w-full justify-center items-center flex-col'>
-                      <div className="w-full flex justify-center items-center p-4 gap-2">
+                      {/* <div className="w-full flex justify-center items-center p-4 gap-2">
                         <span className='text-2xl leading-6'>{scoreInfo[1]}</span>
-                        <p className={`text-xl leading-6 ${scoreInfo[0]} text-center align-middle font-semibold`}>{`${scoreInfo[2]}  You Scored ${questionData.score} in this Question`}</p>
+                        <p className={`text-xl leading-6 ${scoreInfo[0]} text-center align-middle font-semibold`}>{`${scoreInfo[2]}  You Scored ${questionData.Rating} in this Question`}</p>
                       </div>
-                    <br/>
+                    <br/> */}
 
                   <Tabs defaultValue="account" className="w-full">
                       <TabsList className="grid w-full grid-cols-2 p-2 h-auto">
@@ -97,8 +105,28 @@ export default function Analysis({
                       <TabsContent value="account" className='bg-transparent outline-none ring-0'>
                         <Card className='outline-0 border-0 p-0 m-0 bg-transparent shadow-none'>
                           <CardHeader className='p-4'>
-                            <CardDescription>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit voluptas cupiditate velit minima accusamus mollitia ad praesentium voluptate eveniet. Similique illo repellendus ratione, sint qui, fugit aut quibusdam excepturi sequi sapiente optio, voluptates facere quod sed blanditiis eum temporibus iste placeat facilis libero iure praesentium? Dolores magnam distinctio neque, odio molestiae, tempore nobis maiores quibusdam commodi veritatis illo ratione provident at. Recusandae sapiente ut accusantium quasi non doloremque! Animi, nulla sed consequatur esse quas quibusdam corporis consectetur illo repudiandae beatae, iure magni! Maiores ipsa id earum, perferendis eum suscipit eveniet at molestias cum excepturi, reprehenderit laboriosam velit. Itaque accusamus, corrupti repellat vel sunt maxime. Numquam sed iusto quos, magnam quo accusamus rem, laboriosam ad blanditiis, magni tempora beatae expedita praesentium quasi? Officiis eos, commodi distinctio fugit dolorum neque animi dicta quibusdam soluta quaerat maiores illum nesciunt magnam enim beatae, tempora illo deserunt minus. Reiciendis, maxime eos quisquam voluptatum repudiandae id doloremque delectus atque dolores enim suscipit hic modi saepe, laborum deleniti. Tenetur corporis a iure, quo dolor recusandae voluptates commodi. Corrupti corporis itaque molestias debitis deleniti dolores blanditiis sequi magnam a, ad similique quia, animi maxime quisquam eos ut quae mollitia fugiat excepturi? Tempora quidem inventore, sed id accusantium similique, ipsam incidunt excepturi voluptatem in quia ullam maiores eos officia rem numquam quaerat placeat saepe et quisquam consectetur beatae cumque aliquid. Quaerat dolor sequi maiores facilis vel, reprehenderit, enim atque unde nulla dolore libero aliquid nam laudantium placeat sapiente corporis? Repellendus nulla reiciendis maxime nostrum libero deserunt saepe labore, illo velit ut corrupti dicta modi corporis.
+                            <CardDescription className="text-base flex flex-col gap-2">
+                              <div className="flex gap-2">{questionData['analysis']}</div>
+                              {
+                                questionData['Confidence and Clarity'] && 
+                                <div className="flex gap-2"><span className="min-w-[200px] font-bold ">{"Confidence and Clarity: "}</span>{questionData['Confidence and Clarity']}</div>
+                              }
+                              {
+                                questionData['Depth of knowledge'] && 
+                                <div className="flex gap-2"><span className="min-w-[200px] font-bold ">{"Depth of knowledge: "}</span>{questionData['Depth of knowledge']}</div>
+                              }
+                              {
+                                questionData['Relevance and Accuracy'] && 
+                                <div className="flex gap-2"><span className="min-w-[200px] font-bold ">{"Relevance and Accuracy: "}</span>{questionData['Relevance and Accuracy']}</div>
+                              }
+                              {
+                                questionData['Strong topics'] && 
+                                <div className="flex gap-2"><span className="min-w-[200px] font-bold ">{"Strong topics: "}</span>{questionData['Strong topics']}</div>
+                              }
+                              {
+                                questionData['Weak topics'] && 
+                                <div className="flex gap-2"><span className="min-w-[200px] font-bold ">{"Weak topics: "}</span>{questionData['Weak topics']}</div>
+                              }
                             </CardDescription>
                           </CardHeader>
 
@@ -107,9 +135,8 @@ export default function Analysis({
                       <TabsContent value="password">
                         <Card className='outline-0 border-0 p-0 m-0 bg-transparent shadow-none'>
                           <CardHeader className='p-4'>
-                            <CardDescription>
-                              Response...
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit voluptas cupiditate velit minima accusamus mollitia ad praesentium voluptate eveniet. Similique illo repellendus ratione, sint qui, fugit aut quibusdam excepturi sequi sapiente optio, voluptates facere quod sed blanditiis eum temporibus iste placeat facilis libero iure praesentium? Dolores magnam distinctio neque, odio molestiae, tempore nobis maiores quibusdam commodi veritatis illo ratione provident at. Recusandae sapiente ut accusantium quasi non doloremque! Animi, nulla sed consequatur esse quas quibusdam corporis consectetur illo repudiandae beatae, iure magni! Maiores ipsa id earum, perferendis eum suscipit eveniet at molestias cum excepturi, reprehenderit laboriosam velit. Itaque accusamus, corrupti repellat vel sunt maxime. Numquam sed iusto quos, magnam quo accusamus rem, laboriosam ad blanditiis, magni tempora beatae expedita praesentium quasi? Officiis eos, commodi distinctio fugit dolorum neque animi dicta quibusdam soluta quaerat maiores illum nesciunt magnam enim beatae, tempora illo deserunt minus. Reiciendis, maxime eos quisquam voluptatum repudiandae id doloremque delectus atque dolores enim suscipit hic modi saepe, laborum deleniti. Tenetur corporis a iure, quo dolor recusandae voluptates commodi. Corrupti corporis itaque molestias debitis deleniti dolores blanditiis sequi magnam a, ad similique quia, animi maxime quisquam eos ut quae mollitia fugiat excepturi? Tempora quidem inventore, sed id accusantium similique, ipsam incidunt excepturi voluptatem in quia ullam maiores eos officia rem numquam quaerat placeat saepe et quisquam consectetur beatae cumque aliquid. Quaerat dolor sequi maiores facilis vel, reprehenderit, enim atque unde nulla dolore libero aliquid nam laudantium placeat sapiente corporis? Repellendus nulla reiciendis maxime nostrum libero deserunt saepe labore, illo velit ut corrupti dicta modi corporis.
+                            <CardDescription className="text-base">
+                              {questionData.response}
                             </CardDescription>
                           </CardHeader>
                         </Card>

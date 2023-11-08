@@ -152,7 +152,35 @@ export default function Question({
 
 
         } catch (error) {
-          alert("Some error occured. Please try again");
+          alert("API Rate Limit Error. Please try again");
+
+            const error_answer = "Sorry, I'm not sure about this answer"
+            const error_data = {
+              "Relevance and Accuracy": "Your answer is not relevant to the question as you have stated that you do not know the answer. It is not accurate in providing the necessary information about RESTful services.",
+              "Depth of knowledge": "From your answer, it can be inferred that you do not possess knowledge about RESTful services.",
+              "Confidence and Clarity": "Your answer lacks confidence and clarity as you have stated that you do not know the answer.",
+              "Strong topics": "It is evident that you do not have knowledge about RESTful services.",
+              "Weak topics": "Your answer shows a lack of knowledge about RESTful services and its benefits.",
+              "Rating": "1/10"
+            }
+
+            let analysisData = ""
+            if(localStorage.getItem("analysis")){
+              // @ts-ignore
+              analysisData = localStorage.getItem("analysis")
+            }
+            localStorage.setItem("analysis", analysisData + "<SEP>" + JSON.stringify(error_data));
+
+
+            let responseData = ""
+            if(localStorage.getItem("responseData")){
+              // @ts-ignore
+              responseData = localStorage.getItem("responseData")
+            }
+            localStorage.setItem("responseData", responseData + "<SEP>" + JSON.stringify(error_answer));
+
+
+
           console.log(error);
         }
   

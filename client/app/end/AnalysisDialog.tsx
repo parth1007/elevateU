@@ -30,8 +30,8 @@ export function FinalAnalysis({data} : {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[725px] bg-white rounded-xl">
         <DialogHeader>
-          <DialogTitle>Overall Analysis</DialogTitle>
-          <DialogDescription className="mt-4 text-sm font-medium">
+          <DialogTitle className="text-xl">Overall Analysis</DialogTitle>
+          <DialogDescription className="mt-4 pt-4 text-sm font-medium">
             {data}
           </DialogDescription>
         </DialogHeader>

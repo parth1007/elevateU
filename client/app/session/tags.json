@@ -1,218 +1,120 @@
-[
-    {   
-    "value" : "Data structure and Algorithm",
-    "label" : "Data structure and Algorithm"
-    },
-    {
-    "value" : "Operating system",
-    "label" : "Operating system"
-    },
-    {
-    "value" : "Database Management Systems",
-    "label" : "Database Management Systems"
-    },
-    {
-    "value" : "Relational Database Design",
-    "label" : "Relational Database Design"
-    },
-    {
-    "value" : "Web Development",
-    "label" : "Web Development"
-    },
-    {
-    "value" : "Front-End Frameworks",
-    "label" : "Front-End Frameworks"
-    },
-    {
-    "value" : "Back-End Development",
-    "label" : "Back-End Development"
-    },
-    {
-    "value" : "RESTful APIs",
-    "label" : "RESTful APIs"
-    },
-    {
-    "value" : "Design Patterns",
-    "label" : "Design Patterns"
-    },
-    {
-    "value" : "Object-Oriented Programming Principles",
-    "label" : "Object-Oriented Programming Principles"
-    },
-    {
-    "value" : "Version Control Systems",
-    "label" : "Version Control Systems"
-    },
-    {
-    "value" : "Software Development Life Cycle",
-    "label" : "Software Development Life Cycle"
-    },
-    {
-    "value" : "Agile and Scrum Methodologies",
-    "label" : "Agile and Scrum Methodologies"
-    },
-    {
-    "value" : "DevOps and CI/CD",
-    "label" : "DevOps and CI/CD"
-    },
-    {
-    "value" : "Cloud Computing",
-    "label" : "Cloud Computing"
-    },
-    {
-    "value" : "DevOps and CI/CD",
-    "label" : "DevOps and CI/CD"
-    },
-    {
-    "value" : "Microservices Architecture",
-    "label" : "Microservices Architecture"
-    },
-    {
-    "value" : "Software Testing",
-    "label" : "Software Testing"
-    },
-    {
-    "value" : "Mobile App Development",
-    "label" : "Mobile App Development"
-    },
-    {
-    "value" : "Machine Learning and Artificial Intelligence",
-    "label" : "Machine Learning and Artificial Intelligence"
-    },
-    {
-    "value" : "Data Science and Data Analytics",
-    "label" : "Data Science and Data Analytics"
-    },
-    {
-    "value" : "Blockchain Technology",
-    "label" : "Blockchain Technology"
-    },
-    {
-    "value" : "Web Security",
-    "label" : "Web Security"
-    },
-    {
-    "value" : "Network Protocols",
-    "label" : "Network Protocols"
-    },
-    {
-    "value" : "Web Servers",
-    "label" : "Web Servers"
-    },
-    {
-    "value" : "No-Code and Low-Code Development",
-    "label" : "No-Code and Low-Code Development"
-    },
-    {
-    "value" : "Cloud-Native Development",
-    "label" : "Cloud-Native Development"
-    },
-    {
-    "value" : "Internet of Things (IoT)",
-    "label" : "Internet of Things (IoT)"
-    },
-    {
-    "value" : "Data Visualization",
-    "label" : "Data Visualization"
-    },
-    {
-    "value" : "Quantum Computing",
-    "label" : "Quantum Computing"
-    },
-    {
-    "value" : "Computer Hardware",
-    "label" : "Computer Hardware"
-    },
-    {
-    "value" : "DevOps and CI/CD",
-    "label" : "DevOps and CI/CD"
-    },
-    {
-    "value" : "Wireless Networking ",
-    "label" : "Wireless Networking "
-    },
-    {
-    "value" : "Game Development",
-    "label" : "Game Development"
-    },
-    {
-    "value" : "Embedded Systems",
-    "label" : "Embedded Systems"
-    },
-    {
-    "value" : "Ethical Hacking and Penetration Testing",
-    "label" : "Ethical Hacking and Penetration Testing"
-    },
-    {
-    "value" : "Hadoop and Big Data Technologies",
-    "label" : "Hadoop and Big Data Technologies"
-    },
-    {
-    "value" : "Software Development Tools",
-    "label" : "Software Development Tools"
-    },
-    {
-    "value" : "Edge Computing",
-    "label" : "Edge Computing"
-    },
-    {
-    "value" : "Biometric Authentication",
-    "label" : "Biometric Authentication"
-    },
-    {
-    "value" : "Internet Privacy and Data Protection",
-    "label" : "Internet Privacy and Data Protection"
-    },
-    {
-    "value" : "Virtual Private Networks (VPNs)",
-    "label" : "Virtual Private Networks (VPNs)"
-    },
-    {
-    "value" : "Bioinformatics",
-    "label" : "Bioinformatics"
-    },
-    {
-    "value" : "Big O Notation and Algorithm Complexity",
-    "label" : "Big O Notation and Algorithm Complexity"
-    },
-    {
-    "value" : "System Design",
-    "label" : "System Design"
-    },
-    {
-    "value" : "Computer Networks",
-    "label" : "Computer Networks"
-    },
-    {
-    "value" : "Leadership",
-    "label" : "Leadership"
-    },
-    {
-    "value" : "Communication Skills",
-    "label" : "Communication Skills"
-    },
-    {
-    "value" : "Time Management",
-    "label" : "Time Management"
-    },
-    {
-    "value" : "Product Management",
-    "label" : "Product Management "
-    },
-    {
-    "value" : "Blockchain in Supply Chain",
-    "label" : "Blockchain in Supply Chain"
-    },
-    {
-    "value" : "Internet Privacy and Data Protection",
-    "label" : "Internet Privacy and Data Protection"
-    },
-    {
-    "value" : "Cloud-Native Security",
-    "label" : "Cloud-Native Security"
-    },
-    {
-    "value" : "Software Licensing",
-    "label" : "Software Licensing"
-    }
-]
+[{"value": " Data Structures and Algorithms",
+ "label": " Data Structures and Algorithms"},
+ {"value": " Object-Oriented Programming",
+ "label": " Object-Oriented Programming"},
+ {"value": " Web Development",
+ "label": " Web Development"},
+ {"value": " Relational Databases",
+ "label": " Relational Databases"},
+ {"value": " NoSQL Databases",
+ "label": " NoSQL Databases"},
+ {"value": " Mobile App Development (iOS/Android)",
+ "label": " Mobile App Development (iOS/Android)"},
+ {"value": " Networking and Protocols",
+ "label": " Networking and Protocols"},
+ {"value": " Cloud Computing (AWS,Azure, GCP)",
+ "label": " Cloud Computing (AWS, Azure,GCP)"},
+ {"value": " Big Data and Hadoop",
+ "label": " Big Data and Hadoop"},
+ {"value": " Machine Learning and AI",
+ "label": " Machine Learning and AI"},
+ {"value": " Cybersecurity and Network Security",
+ "label": " Cybersecurity and Network Security"},
+ {"value": " Operating Systems (Windows,Linux)",
+ "label": " Operating Systems (Windows,Linux)"},
+ {"value": " Software Development Life Cycle (SDLC)",
+ "label": " Software Development Life Cycle (SDLC)"},
+ {"value": " Version Control (Git)",
+ "label": " Version Control (Git)"},
+ {"value": " Front-end Frameworks (e.g.,React, Angular)",
+ "label": " Front-end Frameworks (e.g.,React,Angular)"},
+ {"value": " Back-end Frameworks",
+ "label": " Back-end Frameworks"},
+ {"value": " DevOps and Continuous Integration/Continuous Deployment (CI/CD)",
+ "label": " DevOps and Continuous Integration/Continuous Deployment (CI/CD)"},
+ {"value": " Test-Driven Development (TDD)",
+ "label": " Test-Driven Development (TDD)"},
+ {"value": " Docker and Containerization",
+ "label": " Docker and Containerization"},
+ {"value": " Microservices Architecture",
+ "label": " Microservices Architecture"},
+ {"value": " Web APIs and RESTful Services",
+ "label": " Web APIs and RESTful Services"},
+ {"value": " Internet of Things (IoT)",
+ "label": " Internet of Things (IoT)"},
+ {"value": " Blockchain Technology",
+ "label": " Blockchain Technology"},
+ {"value": " Data Analytics and Visualization",
+ "label": " Data Analytics and Visualization"},
+ {"value": " User Interface (UI) Design",
+ "label": " User Interface (UI) Design"},
+ {"value": " Virtual Reality (VR) and Augmented Reality (AR)",
+ "label": " Virtual Reality (VR) and Augmented Reality (AR)"},
+ {"value": " Embedded Systems",
+ "label": " Embedded Systems"},
+ {"value": " Natural Language Processing (NLP)",
+ "label": " Natural Language Processing (NLP)"},
+ {"value": " Quantum Computing",
+ "label": " Quantum Computing"},
+ {"value": " Robotics and Automation",
+ "label": " Robotics and Automation"},
+ {"value": " Leadership",
+ "label": " Leadership"},
+ {"value": " Communication",
+ "label": " Communication"},
+ {"value": " Decision-Making",
+ "label": " Decision-Making"},
+ {"value": " Problem-Solving",
+ "label": " Problem-Solving"},
+ {"value": " Time Management",
+ "label": " Time Management"},
+ {"value": " Strategic Thinking",
+ "label": " Strategic Thinking"},
+ {"value": " Adaptability",
+ "label": " Adaptability"},
+ {"value": " Conflict Resolution",
+ "label": " Conflict Resolution"},
+ {"value": " Team Building",
+ "label": " Team Building"},
+ {"value": " Delegation",
+ "label": " Delegation"},
+ {"value": " Project Management",
+ "label": " Project Management"},
+ {"value": " Performance Management",
+ "label": " Performance Management"},
+ {"value": " Financial Management",
+ "label": " Financial Management"},
+ {"value": " Data Analysis",
+ "label": " Data Analysis"},
+ {"value": " Emotional Intelligence",
+ "label": " Emotional Intelligence"},
+ {"value": " Risk Management",
+ "label": " Risk Management"},
+ {"value": " Decision Analysis",
+ "label": " Decision Analysis"},
+ {"value": " Negotiation Skills",
+ "label": " Negotiation Skills"},
+ {"value": " Change Management",
+ "label": " Change Management"},
+ {"value": " Ethical Leadership",
+ "label": " Ethical Leadership"},
+ {"value": " Innovation",
+ "label": " Innovation"},
+ {"value": " Customer Focus",
+ "label": " Customer Focus"},
+ {"value": " Cross-Functional Collaboration",
+ "label": " Cross-Functional Collaboration"},
+ {"value": " Performance Appraisals",
+ "label": " Performance Appraisals"},
+ {"value": " Conflict Management",
+ "label": " Conflict Management"},
+ {"value": " Technical Competence",
+ "label": " Technical Competence"},
+ {"value": " Sustainability",
+ "label": " Sustainability"},
+ {"value": " Marketing and Sales",
+ "label": " Marketing and Sales"},
+ {"value": " Regulatory Compliance",
+ "label": " Regulatory Compliance"},
+ {"value": " Quality Assurance",
+ "label": " Quality Assurance"}]
